@@ -5,9 +5,8 @@
 #pragma comment (lib,"../x64/Debug/ResourceLib")
 int main()
 {
-	//printa();
-//
-	Resources::Resource::printa();
+
+	
 	getchar();
 	return 0;
 }

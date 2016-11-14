@@ -20,7 +20,7 @@ namespace Resources
 		RES_UI
 	};
 
-	class DLL_OPERATION  Resource
+	class Resource
 	{
 	protected:
 		struct RawResourceData
@@ -52,7 +52,7 @@ namespace Resources
 	
 		virtual char * GetDataAsBinary(size_t* size, bool* result = nullptr) = 0;
 
-		static void printa();
+		
 		
 	};
 	

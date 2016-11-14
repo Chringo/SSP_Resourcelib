@@ -56,12 +56,4 @@ char * Resources::Resource::GetDataAsBinary(size_t* size, bool* result)
 	return (char*)&m_resourceData;
 
 }
-void Resources::Resource::printa()
-{
-	
-		std::cout << "Dll is now connected" << std::endl;
-
-	
-}
-;
 
