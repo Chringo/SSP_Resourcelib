@@ -25,7 +25,7 @@ const Resources::EntityType Resources::Entity::GetEntityType() const
 	return m_EntityData.m_entityType;
 }
 
-char * Resources::Entity::GetDataAsBinary(size_t * size, bool * result = nullptr)
+char * Resources::Entity::GetDataAsBinary(size_t * size, bool * result)
 {
 	bool res;
 
@@ -50,6 +50,9 @@ char * Resources::Entity::GetDataAsBinary(size_t * size, bool * result = nullptr
 	
 		if (result != nullptr)
 			*result = true;
+
 		return toReturn;
 	}
+
+	return nullptr;
 }

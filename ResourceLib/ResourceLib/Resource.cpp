@@ -27,7 +27,7 @@ const bool Resources::Resource::SetName(std::string name)
 {
 	try {
 
-		memcpy(m_resourceData.m_name, name.c_str, size_t(256));
+		memcpy(m_resourceData.m_name, name.c_str(), size_t(256));
 	}
 	catch (...)
 	{
@@ -55,5 +55,13 @@ char * Resources::Resource::GetDataAsBinary(size_t* size, bool* result)
 
 	return (char*)&m_resourceData;
 
-};
+}
+void Resources::Resource::printa()
+{
+	
+		std::cout << "Dll is now connected" << std::endl;
+
+	
+}
+;
 

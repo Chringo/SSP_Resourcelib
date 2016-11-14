@@ -31,7 +31,7 @@ namespace Resources
 		const bool IsEntityType(EntityType type) const;
 		const EntityType GetEntityType() const;
 
-		virtual char* GetDataAsBinary(size_t* size, bool* result = nullptr) = 0;
+		virtual char* GetDataAsBinary(size_t* size, bool* result = nullptr);
 
 	};
 }
