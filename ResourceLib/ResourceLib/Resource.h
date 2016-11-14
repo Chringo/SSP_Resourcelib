@@ -22,20 +22,23 @@ namespace Resources
 
 	class Resource
 	{
+	protected:
 		struct RawResourceData
 		{
 			char m_name[256]; //change this variable in UML (when it works again) then delete this comment
 			unsigned int m_id;
-			ResourceType m_resType;
+			ResourceType m_resType = RES_UNKOWN;
 			// remove function in UML
 		};
 	
+	private:
+		Resource(); 
 	protected:
 		std::unordered_map<std::string, Resource*> m_connections;
 		RawResourceData m_resourceData;
 
 	public:
-		Resource();
+		Resource(RawResourceData data);
 		virtual ~Resource();
 
 		const bool IsType(ResourceType type) const;
