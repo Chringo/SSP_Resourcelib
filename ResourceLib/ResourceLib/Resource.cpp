@@ -4,6 +4,13 @@
 
 Resources::Resource::Resource()
 {
+
+
+}
+
+Resources::Resource::Resource(RawResourceData data)
+{
+	this->m_resourceData = data;
 }
 
 
