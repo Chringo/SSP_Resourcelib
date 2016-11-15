@@ -25,25 +25,27 @@ const Resources::EntityType Resources::Entity::GetEntityType() const
 	return m_EntityData.m_entityType;
 }
 
-char * Resources::Entity::GetDataAsBinary(size_t * size, bool * result)
+std::shared_ptr<char> Resources::Entity::GetDataAsBinary(size_t * size, bool * result)
 {
 	bool res;
 
-	char* toReturn = new char[sizeof(RawEntityData) + sizeof(RawResourceData)];
+	std::shared_ptr<char> toReturn = std::shared_ptr<char> (new char[sizeof(RawEntityData) + sizeof(RawResourceData)]);
 	
-	char* parentData = Resources::Resource::GetDataAsBinary(size,&res);
+	std::shared_ptr<char> parentData = Resources::Resource::GetDataAsBinary(size,&res);
+
 	if (res = true)
 	{
 	
 		try {
-			memcpy(toReturn, parentData, *size);
-			memcpy(toReturn + *size, &m_EntityData, sizeof(RawEntityData));
+			memcpy(toReturn.get(), parentData.get(), *size);
+			memcpy(toReturn.get() + *size, &m_EntityData, sizeof(RawEntityData));
 		}
 		catch (...)
 		{
-			delete toReturn;
 			if (result != nullptr)
 				*result = false;
+			std::cout << "Error converting to binary :" << m_resourceData.m_name << std::endl;
+			return nullptr;
 		}
 	
 		*size += sizeof(RawEntityData);

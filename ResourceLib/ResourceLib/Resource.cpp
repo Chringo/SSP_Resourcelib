@@ -31,6 +31,7 @@ const bool Resources::Resource::SetName(std::string name)
 	}
 	catch (...)
 	{
+		std::cout << "Could change name " << m_resourceData.m_name << std::endl;
 		return false;
 	}
 	return true;
@@ -46,14 +47,15 @@ const unsigned int Resources::Resource::GetId() const
 	return m_resourceData.m_id;
 }
 
-char * Resources::Resource::GetDataAsBinary(size_t* size, bool* result)
+std::shared_ptr<char> Resources::Resource::GetDataAsBinary(size_t* size, bool* result)
 {
 	*size = sizeof(RawResourceData);
 	
 	if (result != nullptr)
 		*result = true;
 
-	return (char*)&m_resourceData;
+	return std::shared_ptr<char>((char*)&m_resourceData);
 
 }
+
 

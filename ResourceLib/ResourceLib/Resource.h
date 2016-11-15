@@ -1,12 +1,30 @@
 #ifndef RESOURCELIB_RESOURCE_RESOURCE_H
 #define RESOURCELIB_RESOURCE_RESOURCE_H
 #include "DefineHeader.h"
+#include <memory>
 #include <unordered_map>
-
+#include <d3d11.h>
 
 namespace Resources
 {
+	static bool SAFE_RELEASE(IUnknown * dxBuffer)
+	{
 
+		if (dxBuffer != nullptr)
+		{
+			try {
+				dxBuffer->Release();
+			}
+			catch (...)
+			{
+				return false;
+			}
+
+			dxBuffer = nullptr;
+			return true;
+		}
+		return false;
+	}
 	enum ResourceType
 	{
 		RES_UNKOWN  = - 1,
@@ -25,10 +43,9 @@ namespace Resources
 	protected:
 		struct RawResourceData
 		{
-			char m_name[256]; //change this variable in UML (when it works again) then delete this comment
+			char m_name[256]; 
 			unsigned int m_id;
 			ResourceType m_resType = RES_UNKOWN;
-			// remove function in UML
 		};
 	
 	private:
@@ -50,7 +67,7 @@ namespace Resources
 		const unsigned int GetId() const;
 		
 	
-		virtual char * GetDataAsBinary(size_t* size, bool* result = nullptr) = 0;
+		virtual std::shared_ptr<char> GetDataAsBinary(size_t* size, bool* result = nullptr) = 0;
 
 		
 		

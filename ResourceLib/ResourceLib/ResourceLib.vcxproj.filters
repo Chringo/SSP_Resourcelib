@@ -25,6 +25,12 @@
     <Filter Include="Header Files\Entity">
       <UniqueIdentifier>{89428056-b97b-4ce1-9db7-74c4b48910d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{acce8013-1e1b-4027-ba61-5f09e507be04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mesh">
+      <UniqueIdentifier>{75f3e27c-4787-4017-aa69-5cca0233c213}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -45,6 +51,9 @@
     <ClInclude Include="Entity.h">
       <Filter>Header Files\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -61,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

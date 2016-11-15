@@ -19,7 +19,6 @@ namespace Resources
 		struct RawEntityData
 		{
 			EntityType m_entityType = ENTITY_UNKNOWN;
-			//Change this struct in the UML (when it works) and remove this comment
 		};
 		RawEntityData m_EntityData;
 
@@ -31,7 +30,7 @@ namespace Resources
 		const bool IsEntityType(EntityType type) const;
 		const EntityType GetEntityType() const;
 
-		virtual char* GetDataAsBinary(size_t* size, bool* result = nullptr);
+		virtual std::shared_ptr<char> GetDataAsBinary(size_t* size, bool* result = nullptr);
 
 	};
 }
