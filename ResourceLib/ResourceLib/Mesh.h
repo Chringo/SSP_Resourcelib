@@ -49,7 +49,7 @@ namespace Resources
 		*/
 
 	protected:
-		std::shared_ptr<RawMeshData>   m_meshData; // tänk igenom detta!
+		RawMeshData	  m_meshData;
 		ID3D11Buffer* m_vertBuffer		= nullptr;
 		ID3D11Buffer* m_AnimVertBuffer	= nullptr;
 		ID3D11Buffer* m_indexBuffer		= nullptr;
@@ -60,12 +60,12 @@ namespace Resources
 
 		bool SetVertices(Vertex* data , unsigned int numVerts = 0);
 		bool SetVertices(VertexAnim* data, unsigned int numVerts = 0);
-		const Vertex* GetVertices() const { return m_meshData->m_vertices; };
-		const VertexAnim* GetAnimVertices() const { return m_meshData->m_animVertices; };
+		const ID3D11Buffer* GetVerticesBuffer() const { return m_vertBuffer; };
+		const ID3D11Buffer* GetAnimVerticesBuffer() const { return m_AnimVertBuffer; };
 
 
 		bool SetIndices(unsigned int* indices, unsigned int numIndices);
-		const unsigned int* GetIndices() const    { return m_meshData.m_indices; };
+		const ID3D11Buffer* GetIndicesBuffer() const    { return m_indexBuffer; };
 		const unsigned int  GetNumIndices() const { return m_meshData.m_numIndices; };
 
 		bool HasAnimation() { return m_meshData.hasAnimation; };

@@ -21,9 +21,9 @@ namespace Resources
 			}
 
 			dxBuffer = nullptr;
-			return true;
 		}
-		return false;
+		return true;
+	
 	}
 	enum ResourceType
 	{
