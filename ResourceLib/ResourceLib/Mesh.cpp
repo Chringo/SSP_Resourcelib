@@ -1,23 +1,18 @@
 #include "Mesh.h"
 
 
-Resources::Mesh::Mesh(Resource::RawResourceData resData, RawMeshData meshData) :
+Resources::Mesh::Mesh(Resource::RawResourceData resData, RawMeshData meshData, bool keepRawData) :
 	Resource(resData)
 {
 	this->m_resourceData.m_resType = ResourceType::RES_MESH;
 	m_meshData = meshData;
 
-	switch (meshData.hasAnimation)
-	{
-	case true:
-		this->SetVertices(meshData.m_animVertices, meshData.m_numVerts);
-		break;
-	case false:
-		this->SetVertices(meshData.m_vertices, meshData.m_numVerts);
-		break;
-	}
+	if(meshData.hasAnimation)
+		this->SetVertices(meshData.m_animVertices, meshData.m_numVerts,keepRawData);
+	else
+		this->SetVertices(meshData.m_vertices, meshData.m_numVerts,keepRawData);
 
-	SetIndices(meshData.m_indices, meshData.m_numIndices);
+	SetIndices(meshData.m_indices, meshData.m_numIndices,keepRawData);
 }
 
 Resources::Mesh::Mesh(Resource::RawResourceData resData)
@@ -31,22 +26,15 @@ Resources::Mesh::~Mesh()
 	EraseMeshData();
 }
 
-bool Resources::Mesh::SetVertices(Vertex * data, unsigned int numVerts)
+bool Resources::Mesh::SetVertices(Vertex * data, unsigned int numVerts, bool keepRawData)
 {
-	if (m_meshData.m_vertices != nullptr)
-	{
-		delete[] m_meshData.m_vertices;
-		m_meshData.m_vertices = nullptr;
-	}
-	if (m_meshData.m_animVertices != nullptr)
-	{
-		delete[] m_meshData.m_animVertices;
-		m_meshData.m_animVertices = nullptr;
-	}
-	Resources::SAFE_RELEASE(m_vertBuffer);
-	Resources::SAFE_RELEASE(m_AnimVertBuffer);
 	
-	m_meshData.m_vertices = data;
+	delete[] m_meshData.m_vertices;			m_meshData.m_vertices     = nullptr;
+	delete[] m_meshData.m_animVertices; 	m_meshData.m_animVertices = nullptr;
+	
+
+	if (!Resources::SAFE_RELEASE(m_AnimVertBuffer))  Resources::OutputErrorString(this, std::string("could not release animBuffer")); return false;
+	if (!Resources::SAFE_RELEASE(m_vertBuffer))		 Resources::OutputErrorString(this, std::string("could not release vertbuffer")); return false;
 
 
 	D3D11_BUFFER_DESC bufferDesc;
@@ -57,38 +45,33 @@ bool Resources::Mesh::SetVertices(Vertex * data, unsigned int numVerts)
 
 
 	D3D11_SUBRESOURCE_DATA b_data;
-	b_data.pSysMem = m_meshData.m_vertices;
+	b_data.pSysMem = data;
 	HRESULT hr;
 	//hr = gDevice->CreateBuffer(&bufferDesc, &b_data, &m_vertBuffer);
 
 	if (FAILED(hr))
 		return false;
 
-
+	if (keepRawData) m_meshData.m_vertices = data;
+	else delete[] data; data = nullptr;
 	
 	
 	return true;
 }
 
-bool Resources::Mesh::SetVertices(VertexAnim * data, unsigned int numVerts)
+bool Resources::Mesh::SetVertices(VertexAnim * data, unsigned int numVerts, bool keepRawData)
 {
 	if (numVerts = 0) return false;
 
-	if (m_meshData.m_vertices != nullptr)
-	{
-		delete[] m_meshData.m_vertices;
-		m_meshData.m_vertices = nullptr;
-	}
-	if (m_meshData.m_animVertices != nullptr)
-	{
-		delete[] m_meshData.m_animVertices;
-		m_meshData.m_animVertices = nullptr;
-	}
-	Resources::SAFE_RELEASE(m_vertBuffer);
-	Resources::SAFE_RELEASE(m_AnimVertBuffer);
+	
+	delete[] m_meshData.m_vertices;
+	delete[] m_meshData.m_animVertices;
+	m_meshData.m_vertices = nullptr;
+	m_meshData.m_animVertices = nullptr;
+	
 
-	m_meshData.m_animVertices = data;
-
+	if (!Resources::SAFE_RELEASE(m_AnimVertBuffer))  Resources::OutputErrorString(this, std::string("could not release animBuffer")); return false;
+	if (!Resources::SAFE_RELEASE(m_vertBuffer))		 Resources::OutputErrorString(this, std::string("could not release vertbuffer")); return false;
 
 	D3D11_BUFFER_DESC bufferDesc;
 	memset(&bufferDesc, 0, sizeof(bufferDesc));
@@ -98,20 +81,30 @@ bool Resources::Mesh::SetVertices(VertexAnim * data, unsigned int numVerts)
 
 
 	D3D11_SUBRESOURCE_DATA b_data;
-	b_data.pSysMem = m_meshData.m_animVertices;
+	b_data.pSysMem = data;
 	HRESULT hr;
 	//hr = gDevice->CreateBuffer(&bufferDesc, &b_data, &m_AnimVertBuffer);
+
+
 
 	if (FAILED(hr))
 		return false;
 
+	if (keepRawData) m_meshData.m_animVertices = data;
+	else delete[] data; data = nullptr;
+
+	return true;
+
 }
 
-bool Resources::Mesh::SetIndices(unsigned int * indices, unsigned int numIndices)
+bool Resources::Mesh::SetIndices(unsigned int * indices, unsigned int numIndices, bool keepRawData)
 {
 	HRESULT hr;
 	Resources::SAFE_RELEASE(m_indexBuffer);
 
+	delete[] m_meshData.m_indices; m_meshData.m_indices = nullptr;
+
+	
 	D3D11_BUFFER_DESC ibd;
 
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -128,42 +121,46 @@ bool Resources::Mesh::SetIndices(unsigned int * indices, unsigned int numIndices
 	// how to get the gDevice in here? Hmmmmm
 	//hr = gDevice->CreateBuffer(&ibd, &ibdData, &indexBuffer);
 
+
 	if (FAILED(hr))
 		return false;
+
+	if (keepRawData) m_meshData.m_indices = indices;
+	else delete[] indices; indices = nullptr;
 
 	return true;
 }
 
 bool Resources::Mesh::EraseMeshData()
 {
-	delete[] m_meshData.m_animVertices;
-	delete[] m_meshData.m_vertices;
-	delete[] m_meshData.m_indices;
+	delete[] m_meshData.m_animVertices;	 m_meshData.m_animVertices = nullptr;
+	delete[] m_meshData.m_vertices;		 m_meshData.m_vertices	   = nullptr;
+	delete[] m_meshData.m_indices;		 m_meshData.m_indices	   = nullptr;
 
-	if (!Resources::SAFE_RELEASE(m_AnimVertBuffer)) return false;
-	if (!Resources::SAFE_RELEASE(m_vertBuffer))		return false;
-	if (!Resources::SAFE_RELEASE(m_indexBuffer))	return false;
+	if (!Resources::SAFE_RELEASE(m_AnimVertBuffer))  Resources::OutputErrorString(this, std::string("could not release animBuffer")  ); return false;
+	if (!Resources::SAFE_RELEASE(m_vertBuffer))		 Resources::OutputErrorString(this, std::string("could not release vertbuffer")  ); return false;
+	if (!Resources::SAFE_RELEASE(m_indexBuffer))	 Resources::OutputErrorString(this, std::string("could not release Mindexbuffer")); return false;
 	
 	return true;
 }
 
-bool Resources::Mesh::SetMeshData(RawMeshData* newMeshData)
+bool Resources::Mesh::SetMeshData(RawMeshData* newMeshData, bool keepRawData)
 {
-	if (!EraseMeshData())
+	if (!EraseMeshData()) Resources::OutputErrorString(this, std::string("could not erase MeshData"));
 		return false;
 
-	memcpy(&m_meshData, newMeshData, sizeof(RawMeshData));
+		m_meshData.hasAnimation = newMeshData->hasAnimation;
+		m_meshData.m_numIndices = newMeshData->m_numIndices;
+		m_meshData.m_numVerts   = newMeshData->m_numVerts;
+
+	if (newMeshData->hasAnimation)
+		if (!SetVertices(newMeshData->m_animVertices, newMeshData->m_numVerts, keepRawData)) return false;
+	else
+		if (!SetVertices(newMeshData->m_vertices, newMeshData->m_numVerts,keepRawData)) return false;
 
 
-	switch (m_meshData.hasAnimation)
-	{
-	case true:
-		if(!SetVertices(m_meshData.m_animVertices, m_meshData.m_numVerts)) return false;
-		break;
-	case false:
-		if(!SetVertices(m_meshData.m_vertices, m_meshData.m_numVerts)) return false;
-		break;
-	}
+	if (!SetIndices(m_meshData.m_indices, m_meshData.m_numIndices, keepRawData)) return false;
 
-	return SetIndices(m_meshData.m_indices, m_meshData.m_numIndices);
+
+	return true;
 }

@@ -42,11 +42,6 @@ namespace Resources
 
 		};
 
-		/*
-		TODO: Tänk om detta.
-
-		Ändra get vertices och indices till get buffers istället? Raw data kan endast fås genom binary. och raw datan hålls i applikatoinen där det behövs istället.
-		*/
 
 	protected:
 		RawMeshData	  m_meshData;
@@ -54,24 +49,28 @@ namespace Resources
 		ID3D11Buffer* m_AnimVertBuffer	= nullptr;
 		ID3D11Buffer* m_indexBuffer		= nullptr;
 	public:
-		Mesh(Resource::RawResourceData resData, RawMeshData meshData);
+		Mesh(Resource::RawResourceData resData, RawMeshData meshData, bool keepRawData = false);
 		Mesh(Resource::RawResourceData resData);
 		virtual ~Mesh();
 
-		bool SetVertices(Vertex* data , unsigned int numVerts = 0);
-		bool SetVertices(VertexAnim* data, unsigned int numVerts = 0);
-		const ID3D11Buffer* GetVerticesBuffer() const { return m_vertBuffer; };
-		const ID3D11Buffer* GetAnimVerticesBuffer() const { return m_AnimVertBuffer; };
+		bool SetVertices(Vertex* data , unsigned int numVerts = 0, bool keepRawData = false);
+		bool SetVertices(VertexAnim* data, unsigned int numVerts = 0, bool keepRawData = false);
+		ID3D11Buffer* GetVerticesBuffer()     const { return m_vertBuffer; };
+		ID3D11Buffer* GetAnimVerticesBuffer() const { return m_AnimVertBuffer; };
+		ID3D11Buffer* GetIndicesBuffer()      const { return m_indexBuffer; };
 
-
-		bool SetIndices(unsigned int* indices, unsigned int numIndices);
-		const ID3D11Buffer* GetIndicesBuffer() const    { return m_indexBuffer; };
+		bool SetIndices(unsigned int* indices, unsigned int numIndices, bool keepRawData = false);
 		const unsigned int  GetNumIndices() const { return m_meshData.m_numIndices; };
 
 		bool HasAnimation() { return m_meshData.hasAnimation; };
 
-	};
+		bool SetMeshData(RawMeshData* newMeshData, bool keepRawData = false); //This function will delete the existing information and add the new data.
 
+
+
+	private:
+		bool EraseMeshData(); //Helper function to erase existing memory.
+	};
 }
 #endif
 

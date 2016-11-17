@@ -4,7 +4,7 @@
 #include <memory>
 #include <unordered_map>
 #include <d3d11.h>
-
+#include <string>
 namespace Resources
 {
 	static bool SAFE_RELEASE(IUnknown * dxBuffer)
@@ -19,12 +19,12 @@ namespace Resources
 			{
 				return false;
 			}
-
 			dxBuffer = nullptr;
 		}
 		return true;
 	
 	}
+	
 	enum ResourceType
 	{
 		RES_UNKOWN  = - 1,
@@ -74,6 +74,10 @@ namespace Resources
 	};
 	
 
+	static void OutputErrorString(Resource* object, std::string info = "")
+	{
+		std::cout << "Error in object :" << object->GetName() << "| Additional info : " << info << std::endl;
+	}
 }
 
 #endif
