@@ -52,24 +52,20 @@ namespace Resources
 		Mesh(Resource::RawResourceData resData, RawMeshData meshData, bool keepRawData = false);
 		Mesh(Resource::RawResourceData resData);
 		virtual ~Mesh();
-
+		bool HasAnimation() { return m_meshData.hasAnimation; };
+		/* Set */
 		bool SetVertices(Vertex* data , unsigned int numVerts = 0, bool keepRawData = false);
 		bool SetVertices(VertexAnim* data, unsigned int numVerts = 0, bool keepRawData = false);
+		bool SetIndices(unsigned int* indices, unsigned int numIndices, bool keepRawData = false);
+		bool SetMeshData(RawMeshData* newMeshData, bool keepRawData = false); //This function will delete the existing information and add the new data.
+		/* Get */
 		ID3D11Buffer* GetVerticesBuffer()     const { return m_vertBuffer; };
 		ID3D11Buffer* GetAnimVerticesBuffer() const { return m_AnimVertBuffer; };
 		ID3D11Buffer* GetIndicesBuffer()      const { return m_indexBuffer; };
-
-		bool SetIndices(unsigned int* indices, unsigned int numIndices, bool keepRawData = false);
-		const unsigned int  GetNumIndices() const { return m_meshData.m_numIndices; };
-
-		bool HasAnimation() { return m_meshData.hasAnimation; };
-
-		bool SetMeshData(RawMeshData* newMeshData, bool keepRawData = false); //This function will delete the existing information and add the new data.
-
-
-
+		const unsigned int  GetNumIndices()   const { return m_meshData.m_numIndices; };
+		const unsigned int  GetNumVertices()  const { return m_meshData.m_numVerts; };
 	private:
-		bool EraseMeshData(); //Helper function to erase existing memory.
+		bool EraseMeshData(); // Helper function to erase existing memory.
 	};
 }
 #endif
