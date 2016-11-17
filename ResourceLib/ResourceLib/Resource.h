@@ -3,40 +3,13 @@
 #include "DefineHeader.h"
 #include <memory>
 #include <unordered_map>
-#include <d3d11.h>
+#include "Enumerations.h"
 #include <string>
 namespace Resources
 {
-	static bool SAFE_RELEASE(IUnknown * dxBuffer)
-	{
 
-		if (dxBuffer != nullptr)
-		{
-			try {
-				dxBuffer->Release();
-			}
-			catch (...)
-			{
-				return false;
-			}
-			dxBuffer = nullptr;
-		}
-		return true;
 	
-	}
-	
-	enum ResourceType
-	{
-		RES_UNKOWN  = - 1,
-		RES_TEXTURE = 0,
-		RES_MATERIAL,
-		RES_MESH,
-		RES_SKELETON,
-		RES_SOUND,
-		RES_LIGHT,
-		RES_ANIMATION,
-		RES_UI
-	};
+
 
 	class Resource
 	{

@@ -2,8 +2,10 @@
 
 
 
-Resources::Model::Model()
+Resources::Model::Model(Resource::RawResourceData resData)
+	:Resource(resData)
 {
+
 }
 
 

@@ -19,12 +19,6 @@
     <Filter Include="Header Files\Resource">
       <UniqueIdentifier>{290a91ab-6014-47d3-9cdd-86ede25d6e39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Entity">
-      <UniqueIdentifier>{65370a5f-f71e-4c43-a44f-c4f980a27d8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entity">
-      <UniqueIdentifier>{89428056-b97b-4ce1-9db7-74c4b48910d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Mesh">
       <UniqueIdentifier>{acce8013-1e1b-4027-ba61-5f09e507be04}</UniqueIdentifier>
     </Filter>
@@ -36,6 +30,12 @@
     </Filter>
     <Filter Include="Source Files\ResourceHandler">
       <UniqueIdentifier>{63838877-b91e-4312-9b14-76fce530641a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model">
+      <UniqueIdentifier>{4b6eecbe-655b-4dea-8797-2f3d7775b1e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{bdfc809f-cc9b-4fbf-9f27-72004b3f5fbb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,14 +54,17 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="ResourceHandler.h">
       <Filter>Header Files\ResourceHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Enumerations.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,14 +80,14 @@
     <ClCompile Include="Resource.cpp">
       <Filter>Source Files\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="ResourceHandler.cpp">
       <Filter>Source Files\ResourceHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

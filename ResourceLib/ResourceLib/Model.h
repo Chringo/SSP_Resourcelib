@@ -1,14 +1,15 @@
 #ifndef RESOURCELIB_MODEL_MODEL_H
 #define RESOURCELIB_MODEL_MODEL_H
-#include "Entity.h"
+#include "Resource.h"
 
 namespace Resources {
 
 	class Model :
-		public Resources::Entity
+		public Resource
 	{
 	public:
-		Model();
+		Model(Resource::RawResourceData resData);
+	
 		virtual ~Model();
 	};
 }

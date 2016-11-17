@@ -2,6 +2,7 @@
 #define RESOURCELIB_RESOURCEHANDLER_RESOURCEHANDLER_H
 #include "DefineHeader.h"
 #include "Resource.h"
+#include "Model.h"
 
 
 namespace Resources
@@ -36,7 +37,7 @@ namespace Resources
 		ID3D11Device* GetDevice()			   const { return this->m_device; };
 		ID3D11DeviceContext* GetContext()      const { return this->m_context; };
 		Resource* GetResource(unsigned int id) const ;
-
+		Resources::Status  GetModel(unsigned int id, Model* modelPtr) const;
 	};
 }
 

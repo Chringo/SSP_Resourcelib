@@ -12,6 +12,7 @@ namespace Resources
 		RES_TEXTURE = 0,
 		RES_MATERIAL,
 		RES_MESH,
+		RES_MODEL,
 		RES_SKELETON,
 		RES_SOUND,
 		RES_LIGHT,
