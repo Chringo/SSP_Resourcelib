@@ -32,7 +32,12 @@ void Resources::ResourceHandler::SetContext(ID3D11DeviceContext * context)
 	this->m_context = context;
 }
 
-Resource * Resources::ResourceHandler::GetResource(unsigned int id) const
+Resources::Resource * Resources::ResourceHandler::GetResource(unsigned int id) const
+{
+	return nullptr;
+}
+
+Resources::Model * Resources::ResourceHandler::GetModel(unsigned int id) const
 {
 	return nullptr;
 }
