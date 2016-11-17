@@ -7,78 +7,100 @@
 #pragma comment(lib, "dxguid.lib")
 #include <d3d11sdklayers.h>
 #include "..\ResourceLib\Resource.h"
+#include <DirectXMath.h>
 
 //#pragma comment (lib,"../x64/Debug/ResourceLib")
 int main()
 {
 
 #pragma region
-	//ID3D11Device *gDevice;
-	//ID3D11DeviceContext *gContext;
-	//HRESULT hr;
-	//// Create the device and device context objects
-	// hr = D3D11CreateDevice(
-	//	nullptr,
-	//	D3D_DRIVER_TYPE_HARDWARE,
-	//	nullptr,
-	//	0,
-	//	nullptr,
-	//	0,
-	//	D3D11_SDK_VERSION,
-	//	&gDevice,
-	//	nullptr,
-	//	&gContext);
+	ID3D11Device *gDevice;
+	ID3D11DeviceContext *gContext;
+	IDXGISwapChain *gSwapChain;
 
-	// if (FAILED(hr))
-	//	 MessageBox(GetConsoleWindow(), TEXT("ERROR"), TEXT("ERROR"), MB_OK);
+	DXGI_SWAP_CHAIN_DESC scd;
 
-	//
-	// ID3D11Buffer* m_indexBuffer = nullptr;
+	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-	// unsigned int indices[3] = { 1,2,3 };
+	scd.BufferDesc.Width = (UINT)800;
+	scd.BufferDesc.Height = (UINT)600;
+	scd.BufferCount = 1;
+	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
+	scd.SampleDesc.Count = 1;
+	scd.Windowed = 1;
+	scd.BufferDesc.RefreshRate.Numerator = 60; //fps cap
+	scd.BufferDesc.RefreshRate.Denominator = 1;
+	scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	scd.OutputWindow = GetConsoleWindow();
+	HRESULT hr;
+	// Create the device and device context objects
+	 hr = D3D11CreateDeviceAndSwapChain(
+		NULL,
+		D3D_DRIVER_TYPE_HARDWARE,
+		NULL,
+		0,
+		NULL,
+		NULL,
+		D3D11_SDK_VERSION,
+		&scd,
+		&gSwapChain,
+		&gDevice,
+		NULL,
+		&gContext);
 
-	// D3D11_BUFFER_DESC ibd;
+	 if (FAILED(hr))
+		 MessageBox(GetConsoleWindow(), TEXT("ERROR"), TEXT("ERROR"), MB_OK);
 
-	// ibd.Usage = D3D11_USAGE_DEFAULT;
-	// ibd.ByteWidth = sizeof(UINT) * 3;
-	// ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	// ibd.CPUAccessFlags = 0;
-	// ibd.MiscFlags = 0;
-	// ibd.StructureByteStride = 0;
+	
+	 ID3D11Buffer* m_indexBuffer = nullptr;
 
-	// D3D11_SUBRESOURCE_DATA ibdData;
-	// ibdData.pSysMem = indices;
+	 unsigned int indices[3] = { 1,2,3 };
 
-	//
-	// hr = gDevice->CreateBuffer(&ibd, &ibdData, &m_indexBuffer);
+	 D3D11_BUFFER_DESC ibd;
 
-	// if (FAILED(hr))
-	//	 MessageBox(NULL, L"Error creating indexbuffer", L"Error in mesh class", MB_ICONERROR | MB_OK);
-	// 
+	 ibd.Usage = D3D11_USAGE_DEFAULT;
+	 ibd.ByteWidth = sizeof(UINT) * 3;
+	 ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	 ibd.CPUAccessFlags = 0;
+	 ibd.MiscFlags = 0;
+	 ibd.StructureByteStride = 0;
 
-	// std::cout << " buffer created" << std::endl;
-	//
-	//
-	//D3D11_MAPPED_SUBRESOURCE mappedResource;
-	//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+	 D3D11_SUBRESOURCE_DATA ibdData;
+	 ibdData.pSysMem = indices;
 
-	//hr = gContext->Map(m_indexBuffer, 0, D3D11_MAP_READ , 0, &mappedResource);
-	//if (FAILED(hr))
-	//	return(0);
-	//unsigned int* bufferData = (unsigned int*)mappedResource.pData;
+	
+	 hr = gDevice->CreateBuffer(&ibd, &ibdData, &m_indexBuffer);
+	 gContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	 if (FAILED(hr))
+		 MessageBox(NULL, L"Error creating indexbuffer", L"Error in mesh class", MB_ICONERROR | MB_OK);
+	 
 
-	//std::cout << "Data from D3D11Buffer" << std::endl;
-	//for (size_t i = 0; i < 3; i++)
-	//{
-	//	std::cout << bufferData[i] << ",";
-	//}
-	//std::cout << std::endl;
+	 std::cout << " buffer created" << std::endl;
+	
+	
+//D3D11_MAPPED_SUBRESOURCE mappedResource;
+//ZeroMemory(&mappedResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+//
+//hr = gContext->Map(m_indexBuffer, 0, D3D11_MAP_READ , 0, &mappedResource);
+//if (FAILED(hr))
+//	return(0);
+//unsigned int* bufferData = (unsigned int*)mappedResource.pData;
+
+	
 #pragma endregion
 	
-	char* hej = nullptr;
+		
 
+	 getchar();
 
-	getchar();
-	delete hej;
+	 gContext->Draw(0, 0);
+	 gSwapChain->Present(0, 0);
+	 gContext->Draw(0, 0);
+	 getchar();
+	 gContext->Release();
+	 gDevice->Release();
+
 	return 0;
 }

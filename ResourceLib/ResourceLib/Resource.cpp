@@ -31,7 +31,7 @@ const bool Resources::Resource::SetName(std::string name)
 	}
 	catch (...)
 	{
-		std::cout << "Could change name " << m_resourceData.m_name << std::endl;
+		Resources::OutputErrorString(this, std::string("Could not change name"));
 		return false;
 	}
 	return true;

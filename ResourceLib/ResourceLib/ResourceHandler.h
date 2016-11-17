@@ -5,6 +5,7 @@
 #include "Model.h"
 
 
+
 namespace Resources
 {
 
@@ -18,15 +19,16 @@ namespace Resources
 
 	private:
 		std::unordered_map<unsigned int, ResourceContainer*> m_resources;
+		std::unordered_map<unsigned int, ResourceContainer*> m_models; //Second map for optimization
 		//Resources::Fileloader* m_fileLoader
-		ID3D11Device* m_device		 = nullptr;
+		ID3D11Device* m_device		   = nullptr;
 		ID3D11DeviceContext* m_context = nullptr;
 
 	public:
 		ResourceHandler();
 		virtual ~ResourceHandler();
 
-		bool LoadLevel(unsigned int id);
+		Resources::Status LoadLevel(unsigned int id);
 
 
 		/* Set */
@@ -36,8 +38,12 @@ namespace Resources
 		/* Get */
 		ID3D11Device* GetDevice()			   const { return this->m_device; };
 		ID3D11DeviceContext* GetContext()      const { return this->m_context; };
-		Resource* GetResource(unsigned int id) const ;
+		Resources::Status  GetResource(unsigned int id, Resource* resPtr) const ;
 		Resources::Status  GetModel(unsigned int id, Model* modelPtr) const;
+
+	private:
+		Resources::Status FakeLoadModel(unsigned int id, char* data, size_t* size); //For testing purposes!
+		Resources::Status LoadResource(unsigned int id, char* data, size_t* size); //this should be in file loader later!
 	};
 }
 
