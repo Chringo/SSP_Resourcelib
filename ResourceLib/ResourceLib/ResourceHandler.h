@@ -1,12 +1,13 @@
 #ifndef RESOURCELIB_RESOURCEHANDLER_RESOURCEHANDLER_H
 #define RESOURCELIB_RESOURCEHANDLER_RESOURCEHANDLER_H
-
+#include "DefineHeader.h"
 #include "Resource.h"
+
 
 namespace Resources
 {
 
-	class ResourceHandler
+	class DLL_OPERATION ResourceHandler
 	{
 		struct ResourceContainer
 		{
@@ -23,14 +24,18 @@ namespace Resources
 	public:
 		ResourceHandler();
 		virtual ~ResourceHandler();
+
+		bool LoadLevel(unsigned int id);
+
+
 		/* Set */
 		void SetDeviceAndContext(ID3D11Device* device, ID3D11DeviceContext* context);
 		void SetDevice(ID3D11Device* device);
 		void SetContext(ID3D11DeviceContext* context);
 		/* Get */
-		ID3D11Device* GetDevice() { return this->m_device; };
-		ID3D11DeviceContext* GetContext() { return this->m_context; };
-
+		ID3D11Device* GetDevice()			   const { return this->m_device; };
+		ID3D11DeviceContext* GetContext()      const { return this->m_context; };
+		Resource* GetResource(unsigned int id) const ;
 
 	};
 }
