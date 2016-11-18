@@ -13,7 +13,7 @@ namespace Resources
 		std::vector<Model> m_containers;
 
 	public:
-		Resources::Status GetModel(const unsigned int& id, ResourceContainer* modelPtr);
+		Resources::Status GetModel( unsigned int& id, ResourceContainer *modelPtr);
 
 		ModelHandler(size_t modelAmount);
 		

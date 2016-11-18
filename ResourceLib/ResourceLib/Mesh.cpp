@@ -21,6 +21,30 @@ Resources::Mesh::Mesh(Resource::RawResourceData resData)
 	this->m_resourceData.m_resType = ResourceType::RES_MESH;
 }
 
+Resources::Mesh::Mesh() : Resource()
+{
+	m_resourceData.m_resType = ResourceType::RES_MESH;
+}
+
+Resources::Status Resources::Mesh::Create(Resource::RawResourceData * resData, RawMeshData * meshData, bool keepRawData)
+{
+
+	m_resourceData = *resData;
+	m_resourceData.m_resType = RES_MESH;
+	if (meshData != nullptr)
+	{
+		if(!this->SetIndices(meshData->m_indices, meshData->m_numIndices, keepRawData))	   return Status::ST_BUFFER_ERROR;
+		if (meshData->hasAnimation){
+			if (!SetVertices(meshData->m_animVertices, meshData->m_numVerts, keepRawData)) return Status::ST_BUFFER_ERROR;
+		}
+		else{
+			if (!SetVertices(meshData->m_vertices, meshData->m_numVerts, keepRawData)) return Status::ST_BUFFER_ERROR;
+		}
+	}
+
+	return Resources::Status::ST_OK;
+}
+
 Resources::Mesh::~Mesh()
 {
 	EraseMeshData();
@@ -93,6 +117,7 @@ bool Resources::Mesh::SetVertices(VertexAnim * data, unsigned int numVerts, bool
 	if (keepRawData) m_meshData.m_animVertices = data;
 	else delete[] data; data = nullptr;
 
+	m_meshData.hasAnimation = true;
 	return true;
 
 }
@@ -129,6 +154,11 @@ bool Resources::Mesh::SetIndices(unsigned int * indices, unsigned int numIndices
 	else delete[] indices; indices = nullptr;
 
 	return true;
+}
+
+std::shared_ptr<char> Resources::Mesh::GetDataAsBinary(size_t * size, bool * result)
+{
+	return std::shared_ptr<char>();
 }
 
 bool Resources::Mesh::EraseMeshData()

@@ -2,18 +2,19 @@
 
 
 
-Resources::Status Resources::ModelHandler::GetModel(const unsigned int & id, ResourceContainer * modelPtr)
+Resources::Status Resources::ModelHandler::GetModel( unsigned int & id, ResourceContainer * modelPtr)
 {
 
 
-	std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_models.find(id);
+	std::unordered_map<unsigned int, ResourceContainer>::iterator got = m_models.find(id);
 	if (got == m_models.end()) // if the model does not exists in memory
 	{
 		return Resources::Status::ST_RES_MISSING;
 	}
 	else
 	{
-		modelPtr = got->second;
+		
+		modelPtr = &got->second;
 	}
 
 	return Resources::Status::ST_OK;

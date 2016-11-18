@@ -40,6 +40,7 @@ namespace Resources
 			unsigned int* m_indices		  = nullptr;
 			bool hasAnimation = false;
 
+
 		};
 
 
@@ -51,6 +52,9 @@ namespace Resources
 	public:
 		Mesh(Resource::RawResourceData resData, RawMeshData meshData, bool keepRawData = false);
 		Mesh(Resource::RawResourceData resData);
+		Mesh();
+
+		Resources::Status Create(Resource::RawResourceData* resData, RawMeshData* = nullptr, bool keepRawData = false);
 		virtual ~Mesh();
 		bool HasAnimation() { return m_meshData.hasAnimation; };
 		/* Set */
@@ -64,6 +68,10 @@ namespace Resources
 		ID3D11Buffer* GetIndicesBuffer()      const { return m_indexBuffer; };
 		const unsigned int  GetNumIndices()   const { return m_meshData.m_numIndices; };
 		const unsigned int  GetNumVertices()  const { return m_meshData.m_numVerts; };
+
+		virtual std::shared_ptr<char> GetDataAsBinary(size_t* size, bool* result = nullptr);
+
+
 	private:
 		bool EraseMeshData(); // Helper function to erase existing memory.
 	};

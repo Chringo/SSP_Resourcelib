@@ -25,7 +25,8 @@ namespace Resources
 		ST_OK,
 		ST_WRONG_RESTYPE,
 		ST_RES_MISSING,
-		ST_MEM_FULL
+		ST_MEM_FULL,
+		ST_BUFFER_ERROR
 	};
 
 	static bool SAFE_RELEASE(IUnknown * dxBuffer)
