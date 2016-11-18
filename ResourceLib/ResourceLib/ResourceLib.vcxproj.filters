@@ -49,6 +49,12 @@
     <Filter Include="Source Files\MeshHandler">
       <UniqueIdentifier>{7bd5a757-dc01-4615-9aef-49d4ae43e7c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\FileLoader">
+      <UniqueIdentifier>{acdaa07c-53bd-40db-a8d6-66a4c17b8262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\FileLoader">
+      <UniqueIdentifier>{1ca23524-60ea-4c60-b55b-9027c747a73b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -84,6 +90,12 @@
     <ClInclude Include="MeshHandler.h">
       <Filter>Header Files\MeshHandler</Filter>
     </ClInclude>
+    <ClInclude Include="FileLoader.h">
+      <Filter>Header Files\FileLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="FileHeaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -112,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="MeshHandler.cpp">
       <Filter>Source Files\MeshHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="FileLoader.cpp">
+      <Filter>Source Files\FileLoader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

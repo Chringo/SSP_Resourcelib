@@ -1,4 +1,4 @@
-#pragma once
+
 #ifndef RESOURCELIB_MESH_MESH_H
 #define RESOURCELIB_MESH_MESH_H
 
