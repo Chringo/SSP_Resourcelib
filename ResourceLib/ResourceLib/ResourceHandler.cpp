@@ -35,47 +35,68 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 
 	/* Test */
 
-	//Get id of the model from the level Instructions
-	unsigned int id = 1337;
-	//Make dataPtr variable
-	char* data;
-	//make a dataSize variable
-	size_t size;
-
 	// for each model in level
-
-	std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_resources.find(id);
-	if (got == m_resources.end()) // if the model does not exists in memory
 	{
-		//Load the model data from the file
-		Status st = FakeLoadModel(id, data, &size);
+		//Get id of the model from the level Instructions
+		unsigned int id = 1337;
+		//Make dataPtr variable
+		char* data;
+		//make a dataSize variable
+		size_t size;
 
-		switch(st)
-			case ST_OK:
+		std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_models.find(id);
+		if (got == m_models.end()) // if the model does not exists in memory
 		{
-
-			unsigned int meshID = ((Model::RawModelData*)data)->meshId;
-			std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_resources.find(meshID);
-			if (got == m_resources.end()) // if the mesh does not exists in memory
+			//Load the model data from the file
+			Model* model;
+			Status st = LoadModel(id, model);
+	
+			switch(st)
+				case ST_OK:
 			{
-				char* meshData;
-				size_t meshMsgSize;
-				st = LoadResource(meshID, meshData, &meshMsgSize); //load the mesh
-
-
-				break;
+	
 			}
 		}
+		
+			got->second->refCount += 1; //Add the reference count
 	}
-	else
-	{
-		got->second->refCount += 1; //Add the reference count
-	}
+	
 
 
 	return Resources::Status::ST_OK;
 }
 
+Resources::Status Resources::ResourceHandler::LoadModel(unsigned int id, Model* modelPtr)
+{
+	char* modelData = nullptr;
+	size_t dataSize;
+	Status st = LoadResource(id, modelData, &dataSize);
+
+	switch (st)
+		case ST_OK:
+		{
+	
+			unsigned int meshID = ((Model::RawModelData*)modelData)->meshId;
+			std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_resources.find(meshID);
+			if (got == m_resources.end()) // if the mesh does not exists in memory
+			{
+				Mesh* meshPtr;
+				st = LoadMesh(meshID, meshPtr); //load the mesh
+				break;
+			}
+		}
+
+
+	return Resources::Status();
+}
+Resources::Status Resources::ResourceHandler::LoadMesh(unsigned int id, Mesh * meshPtr)
+{
+	char* meshData = nullptr;
+	size_t dataSize;
+	Status st = LoadResource(id, meshData, &dataSize);
+
+	return Resources::Status();
+}
 void Resources::ResourceHandler::SetDeviceAndContext(ID3D11Device * device, ID3D11DeviceContext * context)
 {
 	this->m_device = device;
@@ -124,13 +145,6 @@ Resources::Status Resources::ResourceHandler::GetModel(unsigned int id, Model* m
 	return  Resources::Status::ST_OK;
 }
 
-Resources::Status Resources::ResourceHandler::FakeLoadModel(unsigned int id, char * data, size_t* size)
-{
-
-
-
-	return Resources::Status();
-}
 
 Resources::Status Resources::ResourceHandler::LoadResource(unsigned int id, char * data, size_t * size)
 {

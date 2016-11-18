@@ -42,7 +42,8 @@ namespace Resources
 		Resources::Status  GetModel(unsigned int id, Model* modelPtr) const;
 
 	private:
-		Resources::Status FakeLoadModel(unsigned int id, char* data, size_t* size); //For testing purposes!
+		Resources::Status LoadModel(unsigned int id, Model* modelPtr); 
+		Resources::Status LoadMesh(unsigned int id,  Mesh* meshPtr);
 		Resources::Status LoadResource(unsigned int id, char* data, size_t* size); //this should be in file loader later!
 	};
 }
