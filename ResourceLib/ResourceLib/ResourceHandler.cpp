@@ -5,12 +5,16 @@
 Resources::ResourceHandler::ResourceHandler()
 {
 	this->m_resources.reserve(30);
-	this->m_models.reserve(30);
+
+	this->m_modelHandler = new ModelHandler(20);
+	
 }
 
 
 Resources::ResourceHandler::~ResourceHandler()
 {
+
+	delete m_modelHandler;
 }
 
 Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
@@ -39,26 +43,25 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 	{
 		//Get id of the model from the level Instructions
 		unsigned int id = 1337;
-		//Make dataPtr variable
-		char* data;
-		//make a dataSize variable
-		size_t size;
+		
+		ResourceContainer* modelPtr = nullptr;
+		Status st;
 
-		std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_models.find(id);
-		if (got == m_models.end()) // if the model does not exists in memory
+		st = m_modelHandler->GetModel(id, modelPtr);
+		switch (st)
 		{
-			//Load the model data from the file
-			Model* model;
-			Status st = LoadModel(id, model);
-	
-			switch(st)
-				case ST_OK:
+			case Resources::Status::ST_RES_MISSING:
 			{
-	
+				//Load the model
+				//Status st = LoadModel(id, modelPtr);
+
 			}
+
+		
 		}
 		
-			got->second->refCount += 1; //Add the reference count
+		modelPtr->refCount += 1;
+			//got->second->refCount += 1; //Add the reference count
 	}
 	
 

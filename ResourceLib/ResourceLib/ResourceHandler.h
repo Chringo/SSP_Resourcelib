@@ -1,9 +1,7 @@
 #ifndef RESOURCELIB_RESOURCEHANDLER_RESOURCEHANDLER_H
 #define RESOURCELIB_RESOURCEHANDLER_RESOURCEHANDLER_H
 #include "DefineHeader.h"
-#include "Resource.h"
-#include "Model.h"
-
+#include "ModelHandler.h"
 
 
 namespace Resources
@@ -11,16 +9,13 @@ namespace Resources
 
 	class DLL_OPERATION ResourceHandler
 	{
-		struct ResourceContainer
-		{
-			unsigned int refCount = 0; // when this hits 0 unload from memory
-			Resource* resource;
-		};
+		
 
 	private:
 		std::unordered_map<unsigned int, ResourceContainer*> m_resources;
-		std::unordered_map<unsigned int, ResourceContainer*> m_models; //Second map for optimization
 		//Resources::Fileloader* m_fileLoader
+		ModelHandler* m_modelHandler   = nullptr;
+
 		ID3D11Device* m_device		   = nullptr;
 		ID3D11DeviceContext* m_context = nullptr;
 

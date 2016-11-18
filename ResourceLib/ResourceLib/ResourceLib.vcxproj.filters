@@ -37,6 +37,12 @@
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{bdfc809f-cc9b-4fbf-9f27-72004b3f5fbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ModelHandler">
+      <UniqueIdentifier>{c5daedae-6c04-451a-a37e-ebec0a29ce99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ModelHandler">
+      <UniqueIdentifier>{30895d52-f962-4beb-8726-1d07429d688e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -66,6 +72,9 @@
     <ClInclude Include="Enumerations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ModelHandler.h">
+      <Filter>Header Files\ModelHandler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -88,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelHandler.cpp">
+      <Filter>Source Files\ModelHandler</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

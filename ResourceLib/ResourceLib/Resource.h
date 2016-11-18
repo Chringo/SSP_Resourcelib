@@ -3,13 +3,18 @@
 #include "DefineHeader.h"
 #include <memory>
 #include <unordered_map>
+#include <deque>
 #include "Enumerations.h"
 #include <string>
 namespace Resources
 {
 
 	
-
+	struct ResourceContainer
+	{
+		int refCount = 0; // when this hits 0 unload from memory
+		Resource* resource;
+	};
 
 	class Resource
 	{
@@ -21,9 +26,8 @@ namespace Resources
 			ResourceType m_resType = RES_UNKOWN;
 		};
 	
-	private:
-		Resource(); 
 	protected:
+		Resource(); 
 		std::unordered_map<std::string, Resource*> m_connections;
 		RawResourceData m_resourceData;
 
