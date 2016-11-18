@@ -8,9 +8,9 @@ namespace Resources
 	class ModelHandler
 	{
 	private:
-		std::unordered_map<unsigned int, ResourceContainer*> m_models;
+		std::unordered_map<unsigned int, ResourceContainer> m_models;
 		std::deque<Model*> m_emptyContainers;
-		std::vector<Model> m_instances;
+		std::vector<Model> m_containers;
 
 	public:
 		Resources::Status GetModel(const unsigned int& id, ResourceContainer* modelPtr);
@@ -18,6 +18,7 @@ namespace Resources
 		ModelHandler(size_t modelAmount);
 		
 		ModelHandler();
+		Resources::Status LoadModel(char* data, size_t dataSize);
 		virtual ~ModelHandler();
 	};
 

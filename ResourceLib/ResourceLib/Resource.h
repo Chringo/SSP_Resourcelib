@@ -14,11 +14,18 @@ namespace Resources
 	{
 		int refCount = 0; // when this hits 0 unload from memory
 		Resource* resource;
+
+		ResourceContainer() {};
+		ResourceContainer(Resource* res, int ref = 1 )
+		{
+			refCount = ref;
+			resource = res;
+		}
 	};
 
 	class Resource
 	{
-	protected:
+	public:
 		struct RawResourceData
 		{
 			char m_name[256]; 

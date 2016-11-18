@@ -19,9 +19,9 @@ Resources::Model::~Model()
 	delete m_rawData;
 }
 
-Resources::Status Resources::Model::Create(Resource::RawResourceData resData, RawModelData* modelData , bool keepRawData)
+Resources::Status Resources::Model::Create(Resource::RawResourceData* resData, RawModelData* modelData , bool keepRawData)
 {
-	m_resourceData = resData;
+	m_resourceData = *resData;
 	m_resourceData.m_resType = RES_MODEL;
 	if (keepRawData && modelData != nullptr)
 		delete m_rawData; m_rawData = new RawModelData; *m_rawData = *modelData;

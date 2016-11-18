@@ -69,24 +69,17 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 	return Resources::Status::ST_OK;
 }
 
-Resources::Status Resources::ResourceHandler::LoadModel(unsigned int id, Model* modelPtr)
+Resources::Status Resources::ResourceHandler::LoadModel(unsigned int id)
 {
 	char* modelData = nullptr;
 	size_t dataSize;
-	Status st = LoadResource(id, modelData, &dataSize);
+	Status st =/* m_fileLoader->*/LoadResource(id, modelData, &dataSize);
 
 	switch (st)
 		case ST_OK:
 		{
-	
-			unsigned int meshID = ((Model::RawModelData*)modelData)->meshId;
-			std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_resources.find(meshID);
-			if (got == m_resources.end()) // if the mesh does not exists in memory
-			{
-				Mesh* meshPtr;
-				st = LoadMesh(meshID, meshPtr); //load the mesh
-				break;
-			}
+			m_modelHandler->LoadModel(id,modelData, dataSize);
+			
 		}
 
 

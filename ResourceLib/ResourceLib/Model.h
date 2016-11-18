@@ -25,7 +25,7 @@ namespace Resources {
 		Model(Resource::RawResourceData resData);
 		Model();
 		virtual ~Model();
-		Resources::Status Create(Resource::RawResourceData resData, RawModelData* = nullptr,bool keepRawData = false);
+		Resources::Status Create(Resource::RawResourceData* resData, RawModelData* = nullptr,bool keepRawData = false);
 		void SetMesh(Mesh* modelMesh) { this->m_modelMesh;};
 		Mesh* GetMesh() const { return this->m_modelMesh; };
 
