@@ -43,6 +43,12 @@
     <Filter Include="Header Files\ModelHandler">
       <UniqueIdentifier>{30895d52-f962-4beb-8726-1d07429d688e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MeshHandler">
+      <UniqueIdentifier>{4a0dc2a6-0ba3-4615-97cf-5e8b7a06b214}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MeshHandler">
+      <UniqueIdentifier>{7bd5a757-dc01-4615-9aef-49d4ae43e7c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -75,6 +81,9 @@
     <ClInclude Include="ModelHandler.h">
       <Filter>Header Files\ModelHandler</Filter>
     </ClInclude>
+    <ClInclude Include="MeshHandler.h">
+      <Filter>Header Files\MeshHandler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -100,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="ModelHandler.cpp">
       <Filter>Source Files\ModelHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshHandler.cpp">
+      <Filter>Source Files\MeshHandler</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
