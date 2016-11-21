@@ -35,9 +35,10 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 		- Then loop through the resources and check ref counting
 	*/
 
+	if (loadedLevel == id)
+		return Resources::ST_LEVEL_ALREADY_LOADED;
 
-
-	/* Test */
+	/* T e s t */
 
 	// for each model in level
 	{
@@ -53,38 +54,23 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 			case Resources::Status::ST_RES_MISSING:
 			{
 				//Load the model
-				//Status st = LoadModel(id, modelPtr);
+				Status modelSt = m_modelHandler->LoadModel(id, modelPtr);
+				if (modelSt != Status::ST_OK)
+					return modelSt;
+				break;
 
 			}
-
-		
+			case Resources::Status::ST_OK:
+				modelPtr->refCount += 1; //Add the reference count
+				break;
 		}
-		
-		modelPtr->refCount += 1;
-			//got->second->refCount += 1; //Add the reference count
+
 	}
-	
-
-
+	loadedLevel = id;
 	return Resources::Status::ST_OK;
 }
 
-Resources::Status Resources::ResourceHandler::LoadModel(unsigned int id)
-{
-	char* modelData = nullptr;
-	size_t dataSize;
-	Status st =/* m_fileLoader->*/LoadResource(id, modelData, &dataSize);
 
-	switch (st)
-		case ST_OK:
-		{
-			m_modelHandler->LoadModel(id,modelData, dataSize);
-			
-		}
-
-
-	return Resources::Status();
-}
 Resources::Status Resources::ResourceHandler::LoadMesh(unsigned int id, Mesh * meshPtr)
 {
 	char* meshData = nullptr;

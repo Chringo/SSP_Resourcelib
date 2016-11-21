@@ -10,18 +10,7 @@ namespace Resources
 {
 
 	
-	struct ResourceContainer
-	{
-		int refCount = 0; // when this hits 0 unload from memory
-		Resource* resource;
-
-		ResourceContainer() {};
-		ResourceContainer(Resource* res, int ref = 1 )
-		{
-			refCount = ref;
-			resource = res;
-		}
-	};
+	
 
 	class Resource
 	{
@@ -56,7 +45,18 @@ namespace Resources
 		
 		
 	};
-	
+	struct ResourceContainer
+	{
+		int refCount = 0; // when this hits 0 unload from memory
+		Resource* resource;
+
+		ResourceContainer() {};
+		ResourceContainer(Resource* res, int ref = 1)
+		{
+			refCount = ref;
+			resource = res;
+		}
+	};
 
 	static void OutputErrorString(Resource* object, std::string info = "")
 	{

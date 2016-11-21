@@ -21,6 +21,7 @@ Resources::Status Resources::FileLoader::LoadResource(const unsigned int& id, ch
 {
 	std::string path = std::string("pillar.BBF");
 	std::ifstream infile;
+	
 	infile.open(path.c_str(), std::fstream::binary);
 
 	MainHeader mainHeader;
@@ -29,7 +30,7 @@ Resources::Status Resources::FileLoader::LoadResource(const unsigned int& id, ch
 	MeshHeader meshHeader;
 	
 	infile.read((char*)&meshHeader, sizeof(MeshHeader));
-	size_t sizetoRead = sizeof(Resource::RawResourceData)+ sizeof(MeshHeader) + (sizeof(Mesh::Vertex) * meshHeader.vertices) + (sizeof(UINT) * meshHeader.indexLength);
+	size_t sizetoRead = sizeof(Resource::RawResourceData)+ sizeof(MeshHeader) + (sizeof(Mesh::Vertex) * meshHeader.numVerts) + (sizeof(UINT) * meshHeader.indexLength);
 	Resource::RawResourceData tempRes;
 	tempRes.m_id = 1337;
 	tempRes.m_name[0] = 'M';

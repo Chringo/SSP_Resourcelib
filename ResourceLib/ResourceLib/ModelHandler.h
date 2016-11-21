@@ -21,7 +21,7 @@ namespace Resources
 		ModelHandler(size_t modelAmount);
 		
 		ModelHandler();
-		Resources::Status LoadModel(char* data, size_t dataSize);
+		Resources::Status LoadModel(unsigned int& id, ResourceContainer* modelPtr);
 		virtual ~ModelHandler();
 	};
 

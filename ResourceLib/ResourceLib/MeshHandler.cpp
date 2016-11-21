@@ -78,9 +78,10 @@ Resources::Status Resources::MeshHandler::LoadMesh(const unsigned int & id, Reso
 
 	if( !newMesh->SetIndices(indices, meshData->indexLength) ) return Status::ST_BUFFER_ERROR;
 
-	m_meshes[resData->m_id] = ResourceContainer(newMesh, 1); // put it into the map
+	m_meshes[id] = ResourceContainer(newMesh, 1); // put it into the map
 	m_emptyContainers.pop_front(); //remove from empty container queue;
 
+	meshPtr = &m_meshes[id];
 	
 
 	return Resources::Status::ST_OK;

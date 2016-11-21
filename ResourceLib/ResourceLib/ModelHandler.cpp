@@ -30,7 +30,6 @@ Resources::ModelHandler::ModelHandler(size_t modelAmount)
 	for (size_t i = 0; i < modelAmount; i++)
 	{
 		m_emptyContainers.push_back(&m_containers.at(i));
-
 	}
 }
 
@@ -38,8 +37,10 @@ Resources::ModelHandler::ModelHandler()
 {
 }
 
-Resources::Status Resources::ModelHandler::LoadModel(char * data, size_t dataSize)
+Resources::Status Resources::ModelHandler::LoadModel(unsigned int& id, ResourceContainer* modelPtr)
 {
+
+	char* data;
 	//additional headers could be added here,
 	Model* newModel = m_emptyContainers.front();		//Get an empty container
 	newModel->Create((Resource::RawResourceData*)data); //Initialize it with data
@@ -56,9 +57,7 @@ Resources::Status Resources::ModelHandler::LoadModel(char * data, size_t dataSiz
 
 	switch(st)
 		case Status::ST_RES_MISSING: //if it doesent exist
-		{
-		
-		
+		{		
 		m_meshHandler.LoadMesh(meshID,meshPtr); //load the mesh
 		break;
 		}
