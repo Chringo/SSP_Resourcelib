@@ -5,6 +5,7 @@
 Resources::MeshHandler::MeshHandler()
 {
 
+
 }
 
 Resources::MeshHandler::MeshHandler(size_t meshAmount)
@@ -15,7 +16,7 @@ Resources::MeshHandler::MeshHandler(size_t meshAmount)
 	this->m_containers.insert(m_containers.begin(), meshAmount, Mesh());
 	for (size_t i = 0; i < meshAmount; i++)
 	{
-		m_emptyContainers.push_back(&m_containers.at(i));
+		m_emptyContainers.at(i) = &m_containers.at(i);
 	}
 
 }
@@ -25,7 +26,7 @@ Resources::MeshHandler::~MeshHandler()
 {
 }
 
-Resources::Status Resources::MeshHandler::GetMesh(const unsigned int & id, ResourceContainer * meshPtr)
+Resources::Status Resources::MeshHandler::GetMesh(const unsigned int & id, ResourceContainer *& meshPtr)
 {
 
 
@@ -42,15 +43,22 @@ Resources::Status Resources::MeshHandler::GetMesh(const unsigned int & id, Resou
 	return Resources::Status::ST_OK;
 }
 
-Resources::Status Resources::MeshHandler::LoadMesh(const unsigned int & id, ResourceContainer * meshPtr)
+Resources::Status Resources::MeshHandler::LoadMesh(const unsigned int & id, ResourceContainer *& meshPtr)
 {
 
-	char* data;
-	size_t dataSize;
-	FileLoader::GetInstance()->LoadResource(id, data, &dataSize);
+	char* data = nullptr;
+	size_t dataSize = 0;
+	Status st = FileLoader::GetInstance()->LoadResource(id, data, &dataSize);
+	if (st != ST_OK)
+		return st;
 	
 	//additional headers could be added here,
 	Resource::RawResourceData* resData  = (Resource::RawResourceData*)data;
+	if (resData->m_resType != RES_MESH)
+	{
+		delete data;
+		return ST_WRONG_RESTYPE;
+	}
 	MeshHeader* meshData = (MeshHeader*)(data + sizeof(Resource::RawResourceData));
 	
 	unsigned int*			   indices  = nullptr;
@@ -68,21 +76,66 @@ Resources::Status Resources::MeshHandler::LoadMesh(const unsigned int & id, Reso
 		Mesh::VertexAnim* vertices = (Mesh::VertexAnim*)((char*)meshData + sizeof(MeshHeader));
 		newMesh->SetVertices(vertices, meshData->numVerts);
 		indices = (unsigned int*) ((char*)vertices + (sizeof(Mesh::VertexAnim)* meshData->numVerts));
+		
+		for (size_t i = 0; i < meshData->numVerts; i++)
+		{
+			std::cout << vertices[i].position[0] << ","
+				<< vertices[i].position[1] << ","
+				<< vertices[i].position[2] << std::endl;
+		}
 	}
 	else
 	{
 		Mesh::Vertex *vertices = (Mesh::Vertex*)((char*)meshData + sizeof(MeshHeader));
 		newMesh->SetVertices(vertices, meshData->numVerts);
 		indices = (unsigned int*)((char*)vertices + (sizeof(Mesh::Vertex)* meshData->numVerts));
+
+		for (size_t i = 0; i < meshData->numVerts; i++)
+		{
+			std::cout << vertices[i].position[0] << ","
+				<< vertices[i].position[1] << ","
+				<< vertices[i].position[2] << std::endl;
+		}
 	}
 
-	if( !newMesh->SetIndices(indices, meshData->indexLength) ) return Status::ST_BUFFER_ERROR;
+	if( !newMesh->SetIndices(indices, meshData->indexLength) )
+		st =  Status::ST_BUFFER_ERROR;
 
 	m_meshes[id] = ResourceContainer(newMesh, 1); // put it into the map
 	m_emptyContainers.pop_front(); //remove from empty container queue;
 
+
 	meshPtr = &m_meshes[id];
+	delete[] data;
 	
 
-	return Resources::Status::ST_OK;
+	return st;
+}
+
+Resources::Status Resources::MeshHandler::UnloadMesh(const unsigned int & id)
+{
+
+	ResourceContainer* meshRes = nullptr;
+
+	Status st = GetMesh(id, meshRes);
+	switch (st)
+	{
+
+		case ST_OK:
+			meshRes->refCount -= 1;
+			if (meshRes->refCount <= 0)
+			{
+				((Mesh*)meshRes->resource)->Destroy();
+				m_meshes.erase(id);
+				m_emptyContainers.push_back(((Mesh*)meshRes->resource));
+#ifdef _DEBUG
+				std::cout << "MESH : " << id << ". Has been Unloaded" << std::endl;
+#endif // _DEBUG
+
+			}
+		default:
+			return st;
+	}
+
+	return Resources::Status();
 }

@@ -18,8 +18,10 @@ namespace Resources
 		MeshHandler(size_t meshAmount);
 		virtual ~MeshHandler();
 
-		Resources::Status GetMesh(const unsigned int& id, ResourceContainer* modelPtr);
-		Resources::Status LoadMesh(const unsigned int & id, ResourceContainer * meshPtr);
+		Resources::Status GetMesh(const unsigned int& id, ResourceContainer*& modelPtr);
+		Resources::Status LoadMesh(const unsigned int & id, ResourceContainer*& meshPtr);
+		Resources::Status UnloadMesh(const unsigned int & id);
+
 	};
 }
 

@@ -39,6 +39,15 @@ namespace Resources
 			VertexAnim*   m_animVertices  = nullptr;
 			unsigned int* m_indices		  = nullptr;
 			bool hasAnimation = false;
+			RawMeshData()
+			{
+				m_numVerts = 0;
+				m_numIndices = 0;
+				m_vertices = nullptr;
+				m_animVertices = nullptr;
+				m_indices = nullptr;
+				hasAnimation = false;
+			}
 
 
 		};
@@ -55,6 +64,8 @@ namespace Resources
 		Mesh();
 
 		Resources::Status Create(Resource::RawResourceData* resData, RawMeshData* = nullptr, bool keepRawData = false);
+		Resources::Status Destroy();
+		
 		virtual ~Mesh();
 		bool HasAnimation() { return m_meshData.hasAnimation; };
 		/* Set */

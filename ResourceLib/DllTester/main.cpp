@@ -6,15 +6,19 @@
 #pragma comment (lib, "d3dcompiler.lib")
 #pragma comment(lib, "dxguid.lib")
 #include <d3d11sdklayers.h>
-#include "..\ResourceLib\Resource.h"
 #include <DirectXMath.h>
 #include "../ResourceLib/ResourceHandler.h"
-#pragma comment (lib,"../x64/Debug/ResourceLib")
+#pragma comment (lib,"../Debug/ResourceLib")
+
+#define CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 int main()
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	Resources::ResourceHandler resHandle;
 
-	Resources::Model* model;
+	Resources::Model* model = nullptr;
 	
 	
 #pragma region
@@ -105,12 +109,20 @@ int main()
 //	 getchar();
 //	 gContext->Release();
 //	 gDevice->Release();
+	UINT id = 1337;
+	
+
+	Resources::Status st = resHandle.LoadLevel(UINT(1337));
+	
+	resHandle.LoadLevel(id);
+	getchar();
+	resHandle.GetModel(1337, model);
+	std::cout << "Model name : " << model->GetName() << std::endl;
 	
 	getchar();
-
-	//Resources::Status st = resHandle.LoadLevel(UINT(1337));
 	
-		
+
+	resHandle.UnloadLevel(id);
 	getchar();
 	return 0;
 }

@@ -12,7 +12,7 @@ namespace Resources
 	
 	
 
-	class Resource
+	class DLL_OPERATION Resource
 	{
 	public:
 		struct RawResourceData

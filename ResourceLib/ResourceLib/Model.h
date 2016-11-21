@@ -5,7 +5,7 @@
 
 namespace Resources {
 
-	class Model :
+	class DLL_OPERATION Model :
 		public Resource
 	{
 	public:
@@ -26,7 +26,9 @@ namespace Resources {
 		Model();
 		virtual ~Model();
 		Resources::Status Create(Resource::RawResourceData* resData, RawModelData* = nullptr,bool keepRawData = false);
-		void SetMesh(Mesh* modelMesh) { this->m_modelMesh;};
+		Resources::Status Destroy(); // Deincrement references to connected data
+
+		void SetMesh(Mesh* modelMesh) { this->m_modelMesh = modelMesh;};
 		Mesh* GetMesh() const { return this->m_modelMesh; };
 
 		virtual std::shared_ptr<char> GetDataAsBinary(size_t* size, bool* result = nullptr);

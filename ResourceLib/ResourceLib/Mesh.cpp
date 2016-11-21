@@ -24,12 +24,13 @@ Resources::Mesh::Mesh(Resource::RawResourceData resData)
 Resources::Mesh::Mesh() : Resource()
 {
 	m_resourceData.m_resType = ResourceType::RES_MESH;
+
 }
 
 Resources::Status Resources::Mesh::Create(Resource::RawResourceData * resData, RawMeshData * meshData, bool keepRawData)
 {
-
-	m_resourceData = *resData;
+	memcpy((char*)m_resourceData.m_name, (char*)resData->m_name, 256);
+	m_resourceData.m_id = resData->m_id;
 	m_resourceData.m_resType = RES_MESH;
 	if (meshData != nullptr)
 	{
@@ -45,6 +46,13 @@ Resources::Status Resources::Mesh::Create(Resource::RawResourceData * resData, R
 	return Resources::Status::ST_OK;
 }
 
+Resources::Status Resources::Mesh::Destroy()
+{
+	if (!EraseMeshData())
+		return Status::ST_BUFFER_ERROR;
+	return Resources::Status::ST_OK;
+}
+
 Resources::Mesh::~Mesh()
 {
 	EraseMeshData();
@@ -53,8 +61,11 @@ Resources::Mesh::~Mesh()
 bool Resources::Mesh::SetVertices(Vertex * data, unsigned int numVerts, bool keepRawData)
 {
 	
-	delete[] m_meshData.m_vertices;			m_meshData.m_vertices     = nullptr;
-	delete[] m_meshData.m_animVertices; 	m_meshData.m_animVertices = nullptr;
+	delete m_meshData.m_vertices;			
+	
+	m_meshData.m_vertices     = nullptr;
+	delete m_meshData.m_animVertices; 
+	m_meshData.m_animVertices = nullptr;
 	
 
 	if (!Resources::SAFE_RELEASE(m_AnimVertBuffer))  Resources::OutputErrorString(this, std::string("could not release animBuffer")); return false;
@@ -106,7 +117,7 @@ bool Resources::Mesh::SetVertices(VertexAnim * data, unsigned int numVerts, bool
 
 	D3D11_SUBRESOURCE_DATA b_data;
 	b_data.pSysMem = data;
-	HRESULT hr;
+	HRESULT hr = S_OK;
 	//hr = gDevice->CreateBuffer(&bufferDesc, &b_data, &m_AnimVertBuffer);
 
 
@@ -124,7 +135,7 @@ bool Resources::Mesh::SetVertices(VertexAnim * data, unsigned int numVerts, bool
 
 bool Resources::Mesh::SetIndices(unsigned int * indices, unsigned int numIndices, bool keepRawData)
 {
-	HRESULT hr;
+	HRESULT hr = S_OK;
 	Resources::SAFE_RELEASE(m_indexBuffer);
 
 	delete[] m_meshData.m_indices; m_meshData.m_indices = nullptr;
@@ -151,7 +162,7 @@ bool Resources::Mesh::SetIndices(unsigned int * indices, unsigned int numIndices
 		return false;
 
 	if (keepRawData) m_meshData.m_indices = indices;
-	else delete[] indices; indices = nullptr;
+	
 
 	return true;
 }

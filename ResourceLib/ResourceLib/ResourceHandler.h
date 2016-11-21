@@ -12,8 +12,7 @@ namespace Resources
 		
 
 	private:
-		std::unordered_map<unsigned int, ResourceContainer*> m_resources;
-		//Resources::Fileloader* m_fileLoader
+		
 		ModelHandler* m_modelHandler   = nullptr;
 
 		ID3D11Device* m_device		   = nullptr;
@@ -34,12 +33,12 @@ namespace Resources
 		/* Get */
 		ID3D11Device* GetDevice()			   const { return this->m_device; };
 		ID3D11DeviceContext* GetContext()      const { return this->m_context; };
-		Resources::Status  GetResource(unsigned int id, Resource* resPtr) const ;
-		Resources::Status  GetModel(unsigned int id, Model* modelPtr) const;
+	
+		Resources::Status  GetModel(unsigned int id, Model*& modelPtr) const;
 
+
+		Resources::Status UnloadLevel(unsigned int& id); //this will be private later
 	private:
-		Resources::Status LoadMesh(unsigned int id,  Mesh* meshPtr);
-		Resources::Status LoadResource(unsigned int id, char* data, size_t* size); //this should be in file loader later!
 	};
 }
 

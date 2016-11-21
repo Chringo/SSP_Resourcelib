@@ -4,7 +4,6 @@
 
 Resources::ResourceHandler::ResourceHandler()
 {
-	this->m_resources.reserve(30);
 
 	this->m_modelHandler = new ModelHandler(20);
 	
@@ -36,7 +35,13 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 	*/
 
 	if (loadedLevel == id)
+	{
+#ifdef _DEBUG
+		std::cout << "Level already loaded" << std::endl;
+#endif // _DEBUG
 		return Resources::ST_LEVEL_ALREADY_LOADED;
+
+	}
 
 	/* T e s t */
 
@@ -53,6 +58,10 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 		{
 			case Resources::Status::ST_RES_MISSING:
 			{
+#ifdef _DEBUG
+				std::cout << "Model missing, loading" << std::endl;
+#endif // _DEBUG
+
 				//Load the model
 				Status modelSt = m_modelHandler->LoadModel(id, modelPtr);
 				if (modelSt != Status::ST_OK)
@@ -71,14 +80,7 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 }
 
 
-Resources::Status Resources::ResourceHandler::LoadMesh(unsigned int id, Mesh * meshPtr)
-{
-	char* meshData = nullptr;
-	size_t dataSize;
-	Status st = LoadResource(id, meshData, &dataSize);
 
-	return Resources::Status();
-}
 void Resources::ResourceHandler::SetDeviceAndContext(ID3D11Device * device, ID3D11DeviceContext * context)
 {
 	this->m_device = device;
@@ -95,40 +97,35 @@ void Resources::ResourceHandler::SetContext(ID3D11DeviceContext * context)
 	this->m_context = context;
 }
 
-Resources::Status Resources::ResourceHandler::GetResource(unsigned int id, Resource* resPtr) const
+
+Resources::Status Resources::ResourceHandler::GetModel(unsigned int id, Model*& modelPtr) const
 {
-	std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_resources.find(id);
-	if (got != m_resources.end())
-	{
-		resPtr = got->second->resource;
-		return Resources::Status::ST_OK;
-	}
-	else
-		return Resources::Status::ST_RES_MISSING;
+	ResourceContainer* modelCont = nullptr;
+	Status st = m_modelHandler->GetModel(id, modelCont);
 
-}
-
-Resources::Status Resources::ResourceHandler::GetModel(unsigned int id, Model* modelPtr) const
-{
-
-	std::unordered_map<unsigned int, ResourceContainer*>::const_iterator got = m_resources.find(id);
-	if (got != m_resources.end())
+	switch (st)
 	{
-		if (got->second->resource->IsType(Resources::ResourceType::RES_MODEL))
-			modelPtr = (Model*)got->second->resource;
-		else
-			return Resources::Status::ST_WRONG_RESTYPE;
-	}
-	else
-	{
-		return Resources::Status::ST_RES_MISSING;
+	case Status::ST_OK:
+		modelPtr = (Model*)modelCont->resource;
+		break;
+	case Status::ST_RES_MISSING:
 		/*LOAD THE MODEL | Or return placeholder MODEL*/
+		break;
+	default:
+		return st;
 	}
+
 	return  Resources::Status::ST_OK;
 }
 
-
-Resources::Status Resources::ResourceHandler::LoadResource(unsigned int id, char * data, size_t * size)
+Resources::Status Resources::ResourceHandler::UnloadLevel(unsigned int & id)
 {
-	return Resources::Status();
+
+	//for each model in level
+	Status st = m_modelHandler->UnloadModel(id);
+	if (st != ST_OK)
+		return st;
+
+	return Resources::Status::ST_OK;
 }
+

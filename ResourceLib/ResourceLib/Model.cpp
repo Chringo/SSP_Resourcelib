@@ -23,8 +23,18 @@ Resources::Status Resources::Model::Create(Resource::RawResourceData* resData, R
 {
 	m_resourceData = *resData;
 	m_resourceData.m_resType = RES_MODEL;
-	if (keepRawData && modelData != nullptr)
+	if (keepRawData == true && modelData != nullptr)
+	{
 		delete m_rawData; m_rawData = new RawModelData; *m_rawData = *modelData;
+
+	}
+	return Resources::Status();
+}
+
+Resources::Status Resources::Model::Destroy()
+{
+
+	m_modelMesh = nullptr;
 	return Resources::Status();
 }
 
