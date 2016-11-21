@@ -16,20 +16,27 @@ int main()
 	Resources::ResourceHandler resHandle;
 
 	Resources::Model* model;
-	Resources::MemoryManager memoryManager;
-	memoryManager.Alloc(Resources::Memory::MEM_LEVEL, 128);
 	
-	char * bajs = new char[999999];
+	
+#pragma region memoryManager example
+	//Resources::MemoryManager memoryManager;
+	//memoryManager.Alloc(Resources::Memory::MEM_LEVEL, 128);
+	//
+	//char * bajs = new char[999999];
 
-	for (size_t i = 0; i < 999999; i++)
-	{
-		bajs[i] = 'K'; //K: kort för knulla
-	}
+	//for (size_t i = 0; i < 999999; i++)
+	//{
+	//	bajs[i] = 'K'; //K: kort för knulla
+	//}
 
-	memcpy(memoryManager.Store(Resources::Memory::MEM_LEVEL, 999999), bajs, 999999);
+	//memcpy(memoryManager.Store(Resources::Memory::MEM_LEVEL, 999999), bajs, 999999);
 
-	size_t kukstorlek = memoryManager.GetSize(Resources::Memory::MEM_LEVEL);
-	char * fitta = memoryManager.GetMemory(Resources::Memory::MEM_LEVEL);
+	//size_t kukstorlek = memoryManager.GetSize(Resources::Memory::MEM_LEVEL);
+	//char * fitta = memoryManager.GetMemory(Resources::Memory::MEM_LEVEL);
+
+	//memoryManager.Clear(Resources::Memory::MEM_LEVEL); //sätter allt utrymme som ledigt
+#pragma endregion
+
 
 #pragma region
 //	ID3D11Device *gDevice;

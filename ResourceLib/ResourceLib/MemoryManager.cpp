@@ -67,7 +67,7 @@ char *& Resources::MemoryManager::Store(Memory which, size_t size)
 	return memory[which];
 }
 
-void Resources::MemoryManager::clear(Memory which)
+void Resources::MemoryManager::Clear(Memory which)
 {
 	freeSpace[which] = size[which];
 }
