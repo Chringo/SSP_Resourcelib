@@ -55,6 +55,12 @@
     <Filter Include="Header Files\FileLoader">
       <UniqueIdentifier>{1ca23524-60ea-4c60-b55b-9027c747a73b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MemoryManager">
+      <UniqueIdentifier>{cacdc6e5-37b5-46eb-8566-447229e7a776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MemoryManager">
+      <UniqueIdentifier>{426c13b7-8b44-4c7a-9017-c907069986a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -96,6 +102,9 @@
     <ClInclude Include="FileHeaders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MemoryManager.h">
+      <Filter>Header Files\MemoryManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="FileLoader.cpp">
       <Filter>Source Files\FileLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryManager.cpp">
+      <Filter>Source Files\MemoryManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 #define RESOURCELIB_RESOURCEHANDLER_RESOURCEHANDLER_H
 #include "DefineHeader.h"
 #include "ModelHandler.h"
-
+#include "MemoryManager.h"
 
 namespace Resources
 {

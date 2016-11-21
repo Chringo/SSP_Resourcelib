@@ -5,7 +5,13 @@
 
 namespace Resources
 {
+	enum Memory
+	{
+		MEM_LEVEL,
+		MEM_RES,
 
+		MEM_CHUNKS
+	};
 	enum ResourceType
 	{
 		RES_UNKOWN = -1,
