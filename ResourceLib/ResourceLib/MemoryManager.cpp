@@ -60,6 +60,10 @@ char *& Resources::MemoryManager::Store(Memory which, size_t size)
 		this->size[which] = newSize;
 		
 		memory[which] = newMem;
+#ifdef _DEBUG
+		std::cout << "expanded the size of the resource memory buffer" << std::endl;
+#endif // _DEBUG
+
 	}
 
 	freeSpace[which] -= size;

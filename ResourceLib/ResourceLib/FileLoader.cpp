@@ -4,6 +4,8 @@
 
 Resources::FileLoader::FileLoader()
 {
+	this->mem_manager.Alloc(Resources::Memory::MEM_LEVEL, LEVEL_MEMORY);
+	this->mem_manager.Alloc(Resources::Memory::MEM_RES, RESOURCE_MEMORY);
 }
 
 
@@ -37,8 +39,10 @@ Resources::Status Resources::FileLoader::LoadResource(const unsigned int& id, ch
 	tempRes.m_id = id;
 	tempRes.m_name[0] = 'M';
 	tempRes.m_resType = Resources::ResourceType::RES_MESH;
+
+	mem_manager.Clear(Resources::Memory::MEM_RES);
 	
-	data = new char[sizetoRead];
+	data = mem_manager.Store(Resources::Memory::MEM_RES, sizetoRead);
 
 	memcpy((char*)data, (char*)&tempRes, sizeof(Resource::RawResourceData));
 	memcpy((char*)data + sizeof(Resource::RawResourceData), (char*)&meshHeader, sizeof(MeshHeader));

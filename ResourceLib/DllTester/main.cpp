@@ -131,7 +131,6 @@ int main()
 //	 gContext->Release();
 //	 gDevice->Release();
 	UINT id = 1337;
-	
 
 	Resources::Status st = resHandle.LoadLevel(UINT(1337));
 	

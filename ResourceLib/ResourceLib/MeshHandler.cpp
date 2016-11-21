@@ -106,7 +106,7 @@ Resources::Status Resources::MeshHandler::LoadMesh(const unsigned int & id, Reso
 
 
 	meshPtr = &m_meshes[id];
-	delete[] data;
+	
 	
 
 	return st;
