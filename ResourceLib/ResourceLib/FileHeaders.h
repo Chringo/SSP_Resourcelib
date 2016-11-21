@@ -8,7 +8,7 @@ struct MainHeader
 
 struct MeshHeader
 {
-	unsigned int vertices;
+	unsigned int numVerts;
 	unsigned int indexLength;
 	bool skeleton;
 };

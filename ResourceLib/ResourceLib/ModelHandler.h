@@ -2,6 +2,7 @@
 #define RESOURCELIB_MODELHANDLER_MODELHANDLER_H
 #include "Resource.h"
 #include "Model.h"
+#include "MeshHandler.h"
 namespace Resources
 {
 
@@ -11,6 +12,8 @@ namespace Resources
 		std::unordered_map<unsigned int, ResourceContainer> m_models;
 		std::deque<Model*> m_emptyContainers;
 		std::vector<Model> m_containers;
+
+		MeshHandler m_meshHandler;
 
 	public:
 		Resources::Status GetModel( unsigned int& id, ResourceContainer *modelPtr);

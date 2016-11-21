@@ -13,7 +13,6 @@ Resources::Status Resources::ModelHandler::GetModel( unsigned int & id, Resource
 	}
 	else
 	{
-		
 		modelPtr = &got->second;
 	}
 
@@ -49,20 +48,20 @@ Resources::Status Resources::ModelHandler::LoadModel(char * data, size_t dataSiz
  	m_emptyContainers.pop_front(); //remove from empty container queue
 
 	unsigned int meshID = ((Model::RawModelData*)data)->meshId;
-
+	Resources::ResourceContainer* meshPtr;
 
 	Resources::Status st = Status::ST_OK;
-	// st = MeshHandler->getMesh()
 
-	//if it doesent exist
+	st = m_meshHandler.GetMesh(meshID, meshPtr); //Get the mesh
+
 	switch(st)
-		case Status::ST_RES_MISSING:
-	{
-
-		Mesh* meshPtr;
-		st = LoadMesh(meshID, meshPtr); //load the mesh
+		case Status::ST_RES_MISSING: //if it doesent exist
+		{
+		
+		
+		m_meshHandler.LoadMesh(meshID,meshPtr); //load the mesh
 		break;
-	}
+		}
 	
 	return Resources::Status::ST_OK;
 }

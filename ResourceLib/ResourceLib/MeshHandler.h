@@ -1,6 +1,8 @@
 #ifndef RESOURCELIB_MESHHANDLER_MESHHANDLER_H
 #define RESOURCELIB_MESHHANDLER_MESHHANDLER_H
 #include "Mesh.h"
+#include "FileLoader.h"
+#include "FileHeaders.h"
 namespace Resources
 {
 
@@ -17,7 +19,7 @@ namespace Resources
 		virtual ~MeshHandler();
 
 		Resources::Status GetMesh(const unsigned int& id, ResourceContainer* modelPtr);
-		Resources::Status LoadMesh(char* data, size_t dataSize);
+		Resources::Status LoadMesh(const unsigned int & id, ResourceContainer * meshPtr);
 	};
 }
 

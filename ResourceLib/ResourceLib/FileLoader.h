@@ -12,7 +12,7 @@ namespace Resources
 		static FileLoader* GetInstance();
 		virtual ~FileLoader();
 	
-		Resources::Status LoadResource(unsigned int id, char* data, size_t* size);
+		Resources::Status LoadResource(const unsigned int& id, char* data, size_t* size);
 	};
 
 }
