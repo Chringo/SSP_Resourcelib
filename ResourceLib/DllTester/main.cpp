@@ -7,16 +7,30 @@
 #pragma comment(lib, "dxguid.lib")
 #include <d3d11sdklayers.h>
 #include "..\ResourceLib\Resource.h"
+//#include "..\ResourceLib\MemoryManager.h"
 #include <DirectXMath.h>
 #include "../ResourceLib/ResourceHandler.h"
-#pragma comment (lib,"../x64/Debug/ResourceLib")
+#pragma comment (lib,"../ResourceLib/Debug/ResourceLib")
 int main()
 {
 	Resources::ResourceHandler resHandle;
 
 	Resources::Model* model;
+	Resources::MemoryManager memoryManager;
+	memoryManager.Alloc(Resources::Memory::MEM_LEVEL, 128);
 	
-	
+	char * bajs = new char[999999];
+
+	for (size_t i = 0; i < 999999; i++)
+	{
+		bajs[i] = 'K'; //K: kort för knulla
+	}
+
+	memcpy(memoryManager.Store(Resources::Memory::MEM_LEVEL, 999999), bajs, 999999);
+
+	size_t kukstorlek = memoryManager.GetSize(Resources::Memory::MEM_LEVEL);
+	char * fitta = memoryManager.GetMemory(Resources::Memory::MEM_LEVEL);
+
 #pragma region
 //	ID3D11Device *gDevice;
 //	ID3D11DeviceContext *gContext;
