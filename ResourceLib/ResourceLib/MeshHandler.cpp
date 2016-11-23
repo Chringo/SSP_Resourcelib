@@ -5,10 +5,9 @@
 Resources::MeshHandler::MeshHandler()
 {
 
-
 }
 
-Resources::MeshHandler::MeshHandler(size_t meshAmount)
+Resources::MeshHandler::MeshHandler(size_t meshAmount, ID3D11Device* device)
 {
 	this->m_emptyContainers.resize(meshAmount);
 	this->m_meshes.reserve(meshAmount);
@@ -19,11 +18,29 @@ Resources::MeshHandler::MeshHandler(size_t meshAmount)
 		m_emptyContainers.at(i) = &m_containers.at(i);
 	}
 
+	if (device != nullptr) {
+		this->m_device = device;
+	}
+
 }
 
 
 Resources::MeshHandler::~MeshHandler()
 {
+	delete m_placeHolder;
+}
+
+Resources::Mesh * Resources::MeshHandler::GetPlaceHolderMesh()
+{
+
+	if (this->m_placeHolder == nullptr)
+	{
+		m_placeHolder = new Mesh();
+		this->LoadPlaceHolderMesh();
+	}
+
+	return m_placeHolder;
+	
 }
 
 Resources::Status Resources::MeshHandler::GetMesh(const unsigned int & id, ResourceContainer *& meshPtr)
@@ -59,46 +76,51 @@ Resources::Status Resources::MeshHandler::LoadMesh(const unsigned int & id, Reso
 		delete data;
 		return ST_WRONG_RESTYPE;
 	}
-	MeshHeader* meshData = (MeshHeader*)(data + sizeof(Resource::RawResourceData));
 	
+	MeshHeader* meshData = (MeshHeader*)(data + sizeof(Resource::RawResourceData));
 	unsigned int*			   indices  = nullptr;
 	
 #ifdef _DEBUG
 	std::cout << "Loading new Mesh | ID : " << resData->m_id << std::endl;
 #endif // DEBUG
 
-
 	Mesh* newMesh = m_emptyContainers.front();		//Get an empty container
-	newMesh->Create((Resource::RawResourceData*)data); //Initialize it with data
+	st = newMesh->Create((Resource::RawResourceData*)data); //Initialize it with data
+
+	if (st != ST_OK)
+		return st;
 
 	if (meshData->skeleton)
 	{
 		Mesh::VertexAnim* vertices = (Mesh::VertexAnim*)((char*)meshData + sizeof(MeshHeader));
-		newMesh->SetVertices(vertices, meshData->numVerts);
+		newMesh->SetVertices(vertices,m_device, meshData->numVerts);
 		indices = (unsigned int*) ((char*)vertices + (sizeof(Mesh::VertexAnim)* meshData->numVerts));
 		
+#ifdef _DEBUG
 		for (size_t i = 0; i < meshData->numVerts; i++)
 		{
 			std::cout << vertices[i].position[0] << ","
 				<< vertices[i].position[1] << ","
 				<< vertices[i].position[2] << std::endl;
 		}
+#endif // _DEBUG
 	}
 	else
 	{
 		Mesh::Vertex *vertices = (Mesh::Vertex*)((char*)meshData + sizeof(MeshHeader));
-		newMesh->SetVertices(vertices, meshData->numVerts);
+		newMesh->SetVertices(vertices, m_device, meshData->numVerts);
 		indices = (unsigned int*)((char*)vertices + (sizeof(Mesh::Vertex)* meshData->numVerts));
-
+#ifdef _DEBUG
 		for (size_t i = 0; i < meshData->numVerts; i++)
 		{
 			std::cout << vertices[i].position[0] << ","
 				<< vertices[i].position[1] << ","
 				<< vertices[i].position[2] << std::endl;
 		}
+#endif
 	}
 
-	if( !newMesh->SetIndices(indices, meshData->indexLength) )
+	if( !newMesh->SetIndices(indices, meshData->indexLength, m_device) )
 		st =  Status::ST_BUFFER_ERROR;
 
 	m_meshes[id] = ResourceContainer(newMesh, 1); // put it into the map
@@ -126,16 +148,78 @@ Resources::Status Resources::MeshHandler::UnloadMesh(const unsigned int & id)
 			if (meshRes->refCount <= 0)
 			{
 				((Mesh*)meshRes->resource)->Destroy();
-				m_meshes.erase(id);
 				m_emptyContainers.push_back(((Mesh*)meshRes->resource));
+				m_meshes.erase(id);
 #ifdef _DEBUG
 				std::cout << "MESH : " << id << ". Has been Unloaded" << std::endl;
 #endif // _DEBUG
-
 			}
 		default:
 			return st;
 	}
 
-	return Resources::Status();
+	return Resources::Status::ST_OK;
+}
+
+Resources::Status Resources::MeshHandler::LoadPlaceHolderMesh()
+{
+
+
+	std::string path = "placeHolder.bbf";
+	char* data = nullptr;
+	size_t dataSize = 0;
+	Status st = FileLoader::GetInstance()->LoadPlaceHolderMesh(path, data, &dataSize);
+	if (st != ST_OK)
+		return st;
+
+	//additional headers could be added here,
+	Resource::RawResourceData* resData = (Resource::RawResourceData*)data;
+	if (resData->m_resType != RES_MESH){
+		delete data;
+		return ST_WRONG_RESTYPE;
+	}
+
+	MeshHeader* meshData = (MeshHeader*)(data + sizeof(Resource::RawResourceData));
+	unsigned int*			   indices = nullptr;
+
+#ifdef _DEBUG
+	std::cout << "Loading placeHolder mesh" << std::endl;
+#endif // DEBUG
+	st = m_placeHolder->Create((Resource::RawResourceData*)data); //Initialize it with data
+
+	if (st != ST_OK)
+		return st;
+
+	if (meshData->skeleton){
+		Mesh::VertexAnim* vertices = (Mesh::VertexAnim*)((char*)meshData + sizeof(MeshHeader));
+		m_placeHolder->SetVertices(vertices, m_device, meshData->numVerts);
+		indices = (unsigned int*)((char*)vertices + (sizeof(Mesh::VertexAnim)* meshData->numVerts));
+
+#ifdef _DEBUG
+		for (size_t i = 0; i < meshData->numVerts; i++)
+		{
+			std::cout << vertices[i].position[0] << ","
+				<< vertices[i].position[1] << ","
+				<< vertices[i].position[2] << std::endl;
+		}
+#endif // _DEBUG
+	}
+	else{
+		Mesh::Vertex *vertices = (Mesh::Vertex*)((char*)meshData + sizeof(MeshHeader));
+		m_placeHolder->SetVertices(vertices, m_device, meshData->numVerts);
+		indices = (unsigned int*)((char*)vertices + (sizeof(Mesh::Vertex)* meshData->numVerts));
+#ifdef _DEBUG
+		for (size_t i = 0; i < meshData->numVerts; i++)
+		{
+			std::cout << vertices[i].position[0] << ","
+				<< vertices[i].position[1] << ","
+				<< vertices[i].position[2] << std::endl;
+		}
+#endif
+	}
+
+	if (!m_placeHolder->SetIndices(indices, meshData->indexLength, m_device))
+		st = Status::ST_BUFFER_ERROR;
+
+	return st;
 }

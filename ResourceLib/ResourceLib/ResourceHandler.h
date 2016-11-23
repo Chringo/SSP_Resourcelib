@@ -2,7 +2,7 @@
 #define RESOURCELIB_RESOURCEHANDLER_RESOURCEHANDLER_H
 #include "DefineHeader.h"
 #include "ModelHandler.h"
-#include "MemoryManager.h"
+#include "FileLoader.h"
 
 namespace Resources
 {
@@ -21,6 +21,7 @@ namespace Resources
 		unsigned int loadedLevel = 0;
 	public:
 		ResourceHandler();
+		ResourceHandler(ID3D11Device* device, ID3D11DeviceContext* context);
 		virtual ~ResourceHandler();
 
 		Resources::Status LoadLevel(unsigned int id);
@@ -37,7 +38,7 @@ namespace Resources
 		Resources::Status  GetModel(unsigned int id, Model*& modelPtr) const;
 
 
-		Resources::Status UnloadLevel(unsigned int& id); //this will be private later
+		Resources::Status UnloadLevel(unsigned int& id); //this will be private later (public for tests)
 	private:
 	};
 }

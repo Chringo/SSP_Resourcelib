@@ -9,6 +9,14 @@ Resources::ResourceHandler::ResourceHandler()
 	
 }
 
+Resources::ResourceHandler::ResourceHandler(ID3D11Device * device, ID3D11DeviceContext * context)
+{
+	this->m_device = device;
+	this->m_context = context;
+	this->m_modelHandler = new ModelHandler(20);
+	m_modelHandler->SetDevice(device);
+}
+
 
 Resources::ResourceHandler::~ResourceHandler()
 {
@@ -18,7 +26,10 @@ Resources::ResourceHandler::~ResourceHandler()
 
 Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 {
-
+	if (m_device == nullptr){
+		std::cout << "No device is set. Cannot load resources" << std::endl;
+		return Status::ST_DEVICE_MISSING;
+	}
 	/*
 		- Load level information,
 		- Load all models that are in the level.
@@ -44,7 +55,8 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 	}
 
 	/* T e s t */
-
+	FileLoader* fileLoader = Resources::FileLoader::GetInstance();
+	fileLoader->OpenFile(Resources::FileLoader::Files::RESOURCE_FILE);
 	// for each model in level
 	{
 		//Get id of the model from the level Instructions
@@ -76,6 +88,7 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 
 	}
 	loadedLevel = id;
+	fileLoader->CloseFile(Resources::FileLoader::Files::RESOURCE_FILE);
 	return Resources::Status::ST_OK;
 }
 
@@ -85,11 +98,13 @@ void Resources::ResourceHandler::SetDeviceAndContext(ID3D11Device * device, ID3D
 {
 	this->m_device = device;
 	this->m_context = context;
+	m_modelHandler->SetDevice(device);
 }
 
 void Resources::ResourceHandler::SetDevice(ID3D11Device * device)
 {
 	this->m_device = device;
+	m_modelHandler->SetDevice(device);
 }
 
 void Resources::ResourceHandler::SetContext(ID3D11DeviceContext * context)
@@ -110,6 +125,7 @@ Resources::Status Resources::ResourceHandler::GetModel(unsigned int id, Model*& 
 		break;
 	case Status::ST_RES_MISSING:
 		/*LOAD THE MODEL | Or return placeholder MODEL*/
+		modelPtr = m_modelHandler->GetPlaceholderModel();
 		break;
 	default:
 		return st;

@@ -34,22 +34,24 @@ namespace Resources
 		ST_MEM_FULL,
 		ST_BUFFER_ERROR,
 		ST_LEVEL_ALREADY_LOADED,
-		ST_ERROR_OPENING_FILE
+		ST_DEVICE_MISSING,
+		ST_ERROR_OPENING_FILE,
+		ST_FILE_CLOSED
 	};
 
-	static bool SAFE_RELEASE(IUnknown * dxBuffer)
+	static bool SAFE_RELEASE(IUnknown* dxBuffer)
 	{
 
-		if (dxBuffer != nullptr)
+ 		if (dxBuffer != nullptr)
 		{
 			try {
-				dxBuffer->Release();
+				while (dxBuffer->Release()>0);
 			}
 			catch (...)
 			{
 				return false;
 			}
-			dxBuffer = nullptr;
+			
 		}
 		return true;
 

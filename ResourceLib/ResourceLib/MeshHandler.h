@@ -13,15 +13,23 @@ namespace Resources
 		std::unordered_map<unsigned int, ResourceContainer> m_meshes;
 		std::deque<Mesh*> m_emptyContainers;
 		std::vector<Mesh> m_containers;
-	public:
+		ID3D11Device* m_device = nullptr;
+
+		Mesh* m_placeHolder = nullptr;
 		MeshHandler();
-		MeshHandler(size_t meshAmount);
+	public:
+		MeshHandler(size_t meshAmount, ID3D11Device* device = nullptr);
 		virtual ~MeshHandler();
 
-		Resources::Status GetMesh(const unsigned int& id, ResourceContainer*& modelPtr);
-		Resources::Status LoadMesh(const unsigned int & id, ResourceContainer*& meshPtr);
+		Mesh* GetPlaceHolderMesh();
+		Resources::Status GetMesh (const unsigned int& id,   ResourceContainer*& modelPtr);
+		Resources::Status LoadMesh(const unsigned int & id,  ResourceContainer*& meshPtr );
 		Resources::Status UnloadMesh(const unsigned int & id);
 
+		void SetDevice(ID3D11Device* device) { this->m_device = device; };
+
+	private:
+		Resources::Status LoadPlaceHolderMesh();
 	};
 }
 
