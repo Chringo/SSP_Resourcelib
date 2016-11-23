@@ -19,10 +19,12 @@ Resources::Mesh::Mesh(Resource::RawResourceData resData)
 	:Resource(resData)
 {
 	this->m_resourceData.m_resType = ResourceType::RES_MESH;
+
 }
 
 Resources::Mesh::Mesh() : Resource()
 {
+
 	m_resourceData.m_resType = ResourceType::RES_MESH;
 
 }
@@ -74,6 +76,10 @@ Resources::Status Resources::Mesh::Destroy()
 {
 	if (!EraseMeshData())
 		return Status::ST_BUFFER_ERROR;
+	char name[5] = { 'N', 'O', 'N', 'E','\0' };
+	memcpy(m_resourceData.m_name, name, sizeof(char) * 5);
+	this->m_resourceData.m_id = 0;
+
 	return Resources::Status::ST_OK;
 }
 

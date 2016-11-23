@@ -4,7 +4,9 @@
 
 Resources::Resource::Resource()
 {
-
+	char name[5] = { 'N', 'O', 'N', 'E','\0' };
+	memcpy(m_resourceData.m_name, name, sizeof(char) * 5);
+	this->m_resourceData.m_id = 0;
 
 }
 
