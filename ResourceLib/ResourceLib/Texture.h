@@ -9,8 +9,8 @@ namespace Resources {
 	{
 	private:
 		char m_filePath[256];
-		ID3D11ShaderResourceView* textureView;
-		ID3D11Resource* textureResource;
+		ID3D11ShaderResourceView* textureView	= nullptr;
+		ID3D11Resource* textureResource			= nullptr;
 
 	public:
 		Texture();

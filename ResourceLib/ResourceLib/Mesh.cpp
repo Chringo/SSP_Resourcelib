@@ -19,7 +19,6 @@ Resources::Mesh::Mesh(Resource::RawResourceData resData)
 	:Resource(resData)
 {
 	this->m_resourceData.m_resType = ResourceType::RES_MESH;
-
 }
 
 Resources::Mesh::Mesh() : Resource()
@@ -50,9 +49,8 @@ Resources::Status Resources::Mesh::Create(Resource::RawResourceData * resData, I
 		{
 			m_meshData.hasAnimation = meshData->hasAnimation;
 			m_meshData.m_numIndices = meshData->m_numIndices;
-			m_meshData.m_numVerts  = meshData->m_numVerts;
-
-			m_meshData.m_indices = new unsigned int[meshData->m_numIndices];
+			m_meshData.m_numVerts   = meshData->m_numVerts;
+			m_meshData.m_indices	= new unsigned int[meshData->m_numIndices];
 			memcpy((char*)m_meshData.m_indices, meshData->m_indices, sizeof(unsigned int)*  meshData->m_numIndices);
 		
 			if (meshData->hasAnimation)
@@ -103,8 +101,8 @@ bool Resources::Mesh::SetVertices(Vertex * data, ID3D11Device* dev, unsigned int
 		return false;
 	}
 	if (!Resources::SAFE_RELEASE(m_vertBuffer)) {
-	Resources::OutputErrorString(this, std::string("could not release vertbuffer")); 
-	return false;
+		Resources::OutputErrorString(this, std::string("could not release vertbuffer")); 
+		return false;
 	}
 
 

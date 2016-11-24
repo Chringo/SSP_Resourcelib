@@ -3,6 +3,7 @@
 #include "Resource.h"
 #include "Model.h"
 #include "MeshHandler.h"
+#include "MaterialHandler.h"
 namespace Resources
 {
 
@@ -14,6 +15,7 @@ namespace Resources
 		std::vector<Model> m_containers;
 
 		MeshHandler* m_meshHandler;
+		MaterialHandler* m_materialHandler;
 		ID3D11Device* m_device = nullptr;
 
 		Model* placeHolderModel = nullptr;

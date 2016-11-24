@@ -1,7 +1,7 @@
 #ifndef RESOURCELIB_MODEL_MODEL_H
 #define RESOURCELIB_MODEL_MODEL_H
-#include "Resource.h"
 #include "Mesh.h"
+#include "Material.h"
 
 namespace Resources {
 
@@ -18,8 +18,8 @@ namespace Resources {
 
 	private:
 		RawModelData* m_rawData = nullptr;
-		Mesh* m_modelMesh;
-		//Material* m_material;
+		Mesh* m_modelMesh		= nullptr;
+		Material* m_material	= nullptr;
 		//Skeleton* m_skeleton;
 	public:
 		Model(Resource::RawResourceData resData);
@@ -31,6 +31,8 @@ namespace Resources {
 		void SetMesh(Mesh* modelMesh) { this->m_modelMesh = modelMesh;};
 		Mesh* GetMesh() const { return this->m_modelMesh; };
 
+		void SetMaterial(Material* material) { this->m_material = material; };
+		Material* GetMaterial() { return this->m_material; };
 		virtual std::shared_ptr<char> GetDataAsBinary(size_t* size, bool* result = nullptr);
 
 	};

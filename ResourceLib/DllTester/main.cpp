@@ -43,7 +43,7 @@ int main()
 	ID3D11Device *gDevice;
 	ID3D11DeviceContext *gContext;
 	IDXGISwapChain *gSwapChain;
-
+	ID3D11Debug*			debug; //Debug COM			
 	DXGI_SWAP_CHAIN_DESC scd;
 
 	ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
@@ -66,7 +66,7 @@ int main()
 		NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
-		0,
+		2,
 		NULL,
 		NULL,
 		D3D11_SDK_VERSION,
@@ -79,6 +79,9 @@ int main()
 	if (FAILED(hr))
 		MessageBox(GetConsoleWindow(), TEXT("ERROR"), TEXT("ERROR"), MB_OK);
 
+
+	hr = gDevice->QueryInterface(__uuidof(ID3D11Debug), (void**)&debug);
+	if (FAILED(hr))MessageBox(GetConsoleWindow(), L"ERROR INITIALIZING DEBUG", L"Error", MB_ICONERROR | MB_OK);
 	//	 ID3D11Buffer* m_indexBuffer = nullptr;
 	//
 	//	 unsigned int indices[3] = { 1,2,3 };
@@ -152,6 +155,7 @@ int main()
 
 	getchar();
 }
+	debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 	getchar();
 	return 0;
 }

@@ -22,7 +22,7 @@ namespace Resources
 		virtual ~MeshHandler();
 
 		Mesh* GetPlaceHolderMesh();
-		Resources::Status GetMesh (const unsigned int& id,   ResourceContainer*& modelPtr);
+		Resources::Status GetMesh (const unsigned int& id,   ResourceContainer*& meshPtr);
 		Resources::Status LoadMesh(const unsigned int & id,  ResourceContainer*& meshPtr );
 		Resources::Status UnloadMesh(const unsigned int & id);
 

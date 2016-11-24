@@ -3,6 +3,7 @@
 #include "FileLoader.h"
 #include "FileHeaders.h"
 #include "Texture.h"
+#include "TextureLoader\DDSTextureLoader.h"
 namespace Resources
 {
 
@@ -28,7 +29,7 @@ namespace Resources
 
 		Texture* GetPlaceHolderTexture();
 	private:
-		bool CreatePlaceHolder();
+		bool LoadPlaceHolderTexture();
 	};
 }
 

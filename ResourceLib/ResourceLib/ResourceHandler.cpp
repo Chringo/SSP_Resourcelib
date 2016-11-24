@@ -50,7 +50,7 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 #ifdef _DEBUG
 		std::cout << "Level already loaded" << std::endl;
 #endif // _DEBUG
-		return Resources::ST_LEVEL_ALREADY_LOADED;
+		return Resources::ST_RES_ALREADY_LOADED;	
 
 	}
 

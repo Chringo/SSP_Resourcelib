@@ -71,6 +71,8 @@ Resources::Status Resources::FileLoader::LoadResource(const unsigned int& id, ch
 
 	}
 
+
+	//unsigned int resourcePointer = Registry->GetPointerInFile(id);
 	std::ifstream* infile = &fileHandles[RESOURCE_FILE];
 
 	MainHeader mainHeader;
@@ -83,6 +85,7 @@ Resources::Status Resources::FileLoader::LoadResource(const unsigned int& id, ch
 	Resource::RawResourceData tempRes;
 	tempRes.m_id = id;
 	tempRes.m_name[0] = 'M';
+	tempRes.m_name[1] = '\0';
 	tempRes.m_resType = Resources::ResourceType::RES_MESH;
 
 	mem_manager.Clear(Resources::Memory::MEM_RES);

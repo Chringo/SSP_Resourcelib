@@ -194,5 +194,8 @@
     <ClCompile Include="TextureHandler.cpp">
       <Filter>Source Files\Handlers\TextureHandler</Filter>
     </ClCompile>
+    <ClCompile Include="TextureLoader\DDSTextureLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

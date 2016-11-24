@@ -14,11 +14,12 @@ Resources::ModelHandler::ModelHandler(size_t modelAmount, ID3D11Device* device )
 		m_emptyContainers.at(i) = &m_containers.at(i);
 	}
 	
-	this->m_meshHandler =  new MeshHandler(modelAmount);
-
+	this->m_meshHandler		=  new MeshHandler(modelAmount);
+	this->m_materialHandler = new MaterialHandler(modelAmount);
 	if (device != nullptr) {
 		this->m_device = device;
 		m_meshHandler->SetDevice(device);
+		m_materialHandler->SetDevice(device);
 	}
 	
 }
@@ -79,7 +80,7 @@ Resources::Status Resources::ModelHandler::LoadModel(unsigned int& id, ResourceC
 
 	m_models[1337/*((Resource::RawResourceData*)data)->m_id*/] = ResourceContainer(newModel,1); // put it into the map
  	m_emptyContainers.pop_front(); //remove from empty container queue
-
+	Model::RawModelData* modelData = (Model::RawModelData*)data;
 	unsigned int meshID = 124354234; // ((Model::RawModelData*)data)->meshId;
 	Resources::ResourceContainer* meshPtr = nullptr;
 
@@ -89,24 +90,47 @@ Resources::Status Resources::ModelHandler::LoadModel(unsigned int& id, ResourceC
 
 	switch (st)
 	{
-
 		case Status::ST_RES_MISSING: //if it doesent exist
 		{		
 			 Status mSt= m_meshHandler->LoadMesh(meshID,meshPtr); //load the mesh
 			 if (mSt != ST_OK){
 				newModel->SetMesh( m_meshHandler->GetPlaceHolderMesh());
-				return mSt;
 			 }
+			 else
+				newModel->SetMesh((Mesh*)meshPtr->resource);
 			 break;
 		}
 		case Status::ST_OK:
 		{
 			meshPtr->refCount += 1;
-			
+			newModel->SetMesh((Mesh*)meshPtr->resource);
 			break;
 		}
 	}
-		newModel->SetMesh((Mesh*)meshPtr->resource);
+
+		
+
+		ResourceContainer* matPtr;
+		unsigned int matID = 1151 /*modelData->materialId*/;
+		st = m_materialHandler->GetMaterial(matID, matPtr); // Get Material
+		switch (st)
+		{
+		case Status::ST_RES_MISSING:
+		{
+			//Status mSt = m_materialHandler->LoadMaterial(matID, matPtr);
+			//if (mSt != ST_OK)
+				newModel->SetMaterial(m_materialHandler->GetPlaceHolderMaterial());
+			//else
+			//	newModel->SetMaterial((Material*)matPtr->resource);
+			break;
+		}
+		case Status::ST_OK:
+		{
+			matPtr->refCount += 1;
+			newModel->SetMaterial((Material*)matPtr->resource);
+			break;
+		}
+		}
 	
 	return Resources::Status::ST_OK;
 }
@@ -125,8 +149,9 @@ Resources::Status Resources::ModelHandler::UnloadModel(unsigned int & id)
 			{
 				Model* mod = (Model*)modelRes->resource;
 				Mesh* bla = mod->GetMesh();
+				Material* mat = mod->GetMaterial();
 				m_meshHandler->UnloadMesh(bla->GetId());
-				//unload Material
+				m_materialHandler->UnloadMaterial(mat->GetId());
 				//unload skeleton
 				mod->Destroy();
 				m_emptyContainers.push_back(mod);
@@ -143,6 +168,7 @@ Resources::Status Resources::ModelHandler::UnloadModel(unsigned int & id)
 Resources::ModelHandler::~ModelHandler()
 {
 	delete m_meshHandler;
+	delete m_materialHandler;
 	delete placeHolderModel;
 }
 
@@ -150,6 +176,7 @@ void Resources::ModelHandler::SetDevice(ID3D11Device * device)
 {
  m_device = device; 
  m_meshHandler->SetDevice(device);
+ m_materialHandler->SetDevice(device);
 }
 
 bool Resources::ModelHandler::CreatePlaceHolder()
@@ -163,9 +190,10 @@ bool Resources::ModelHandler::CreatePlaceHolder()
 		data.m_id = -11;
 		data.m_resType = RES_MODEL;
 		placeHolderModel->Create(&data);
-		Mesh* placeHolder = m_meshHandler->GetPlaceHolderMesh();
-		placeHolderModel->SetMesh(placeHolder);
-	
+		Mesh*     placeMesh = m_meshHandler->GetPlaceHolderMesh();
+		Material* placeMat  = m_materialHandler->GetPlaceHolderMaterial();
+		placeHolderModel->SetMesh(placeMesh);
+		placeHolderModel->SetMaterial(placeMat);
 		return true;
 	}
 	
