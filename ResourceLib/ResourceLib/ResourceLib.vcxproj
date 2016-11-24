@@ -149,6 +149,8 @@
     <ClInclude Include="Enumerations.h" />
     <ClInclude Include="FileHeaders.h" />
     <ClInclude Include="FileLoader.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialHandler.h" />
     <ClInclude Include="MemoryManager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshHandler.h" />
@@ -175,6 +177,8 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="FileLoader.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialHandler.cpp" />
     <ClCompile Include="MemoryManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshHandler.cpp" />

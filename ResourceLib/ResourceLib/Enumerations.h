@@ -25,6 +25,16 @@ namespace Resources
 		RES_UI			= 8
 	};
 
+	enum TextureType
+	{
+		TEXTURE_UNKNOWN		= -1,
+		TEXTURE_ALBEDO		= 0,
+		TEXTURE_SPECULAR	= 1,
+		TEXTURE_ROUGHNESS   = 2,
+		TEXTURE_NORMAL		= 3,
+		TEXTURE_AO			= 4
+	};
+
 	enum Status
 	{
 		ST_OK,

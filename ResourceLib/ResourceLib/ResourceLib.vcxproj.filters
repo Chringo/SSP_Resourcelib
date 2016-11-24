@@ -61,6 +61,18 @@
     <Filter Include="Source Files\MemoryManager">
       <UniqueIdentifier>{426c13b7-8b44-4c7a-9017-c907069986a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MaterialHandler">
+      <UniqueIdentifier>{cc69706d-4aec-4f11-bd2e-9debbe57b006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MaterialHandler">
+      <UniqueIdentifier>{dfa8a5e3-9321-48bc-b293-405d34b5131c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Material">
+      <UniqueIdentifier>{61b5c664-9caf-4d30-b274-c8c563dbfab0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Material">
+      <UniqueIdentifier>{d0560bc3-99c8-420d-a6f2-650a9445da57}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -105,6 +117,12 @@
     <ClInclude Include="MemoryManager.h">
       <Filter>Header Files\MemoryManager</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialHandler.h">
+      <Filter>Header Files\MaterialHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -139,6 +157,12 @@
     </ClCompile>
     <ClCompile Include="MemoryManager.cpp">
       <Filter>Source Files\MemoryManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialHandler.cpp">
+      <Filter>Source Files\MaterialHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

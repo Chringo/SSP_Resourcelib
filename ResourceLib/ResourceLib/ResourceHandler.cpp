@@ -138,6 +138,7 @@ Resources::Status Resources::ResourceHandler::UnloadLevel(unsigned int & id)
 {
 
 	//for each model in level
+	//get id of model and unload id
 	Status st = m_modelHandler->UnloadModel(id);
 	if (st != ST_OK)
 		return st;
