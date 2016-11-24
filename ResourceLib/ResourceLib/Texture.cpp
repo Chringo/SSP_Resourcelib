@@ -2,8 +2,9 @@
 
 
 
-Resources::Texture::Texture()
+Resources::Texture::Texture() : Resource()
 {
+	m_resourceData.m_resType = ResourceType::RES_TEXTURE;
 	m_filePath[0] = '\0';
 }
 
@@ -13,11 +14,12 @@ Resources::Texture::~Texture()
 	Destroy();
 }
 
-Resources::Texture::Texture(Resource::RawResourceData resData)
+Resources::Texture::Texture(Resource::RawResourceData resData): Resource(resData)
 {
+	m_resourceData.m_resType = ResourceType::RES_TEXTURE;
 }
 
-Resources::Status Resources::Texture::Create(Resource::RawResourceData * resData, char * filePath)
+Resources::Status Resources::Texture::Create(Resource::RawResourceData * resData)
 {
 	return Resources::Status();
 }
@@ -41,4 +43,9 @@ Resources::Status Resources::Texture::SetTexture(ID3D11ShaderResourceView * view
 
 	}
 	return Status::ST_OK;
+}
+
+std::shared_ptr<char> Resources::Texture::GetDataAsBinary(size_t * size, bool * result)
+{
+	return std::shared_ptr<char>();
 }

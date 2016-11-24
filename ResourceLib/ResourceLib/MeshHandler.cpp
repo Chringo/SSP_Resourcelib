@@ -73,7 +73,10 @@ Resources::Status Resources::MeshHandler::LoadMesh(const unsigned int & id, Reso
 	Resource::RawResourceData* resData  = (Resource::RawResourceData*)data;
 	if (resData->m_resType != RES_MESH)
 	{
-		delete data;
+#ifdef _DEBUG
+		std::cout << "Wrong resource type. Wanted mesh, got type: " << resData->m_id << std::endl;
+#endif // _DEBUG
+
 		return ST_WRONG_RESTYPE;
 	}
 	

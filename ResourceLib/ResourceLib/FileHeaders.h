@@ -14,4 +14,8 @@ struct MeshHeader
 };
 
 
+struct TextureHeader
+{
+	char filePath[256];
+};
 #endif
