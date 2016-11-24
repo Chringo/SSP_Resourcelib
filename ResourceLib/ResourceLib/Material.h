@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RESOURCELIB_MATERIAL_MATERIAL_H
+#define RESOURCELIB_MATERIAL_MATERIAL_H
 #include "Resource.h"
 
 namespace Resources {
@@ -18,4 +19,6 @@ namespace Resources {
 		virtual ~Material();
 	};
 }
+
+#endif
 
