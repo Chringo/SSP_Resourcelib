@@ -142,6 +142,9 @@ Resources::Status Resources::MaterialHandler::UnloadMaterial( const unsigned int
 #endif // _DEBUG
 		}
 	default:
+#ifdef _DEBUG
+		std::cout << "No material with id : " << id << " to unload, Was it using placeholder material?" << std::endl;
+#endif // _DEBUG
 		return st;
 	}
 	return Status::ST_OK;

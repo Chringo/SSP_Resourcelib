@@ -58,6 +58,8 @@ Resources::Model * Resources::ModelHandler::GetPlaceholderModel()
 Resources::Status Resources::ModelHandler::LoadModel(unsigned int& id, ResourceContainer*& modelPtr)
 {
 
+	//COMMENTED CODE BECAUSE THERE IS NO FILES TO LOAD YET
+
 	char* data	= nullptr;
 	size_t size = 0;
 	//FileLoader::GetInstance()->LoadResource(id, data, size);
@@ -67,7 +69,15 @@ Resources::Status Resources::ModelHandler::LoadModel(unsigned int& id, ResourceC
 	//additional headers could be added here,
 	Model* newModel = m_emptyContainers.front();		//Get an empty container
 	//newModel->Create((Resource::RawResourceData*)data); //Initialize it with data
-	
+	//Resource::RawResourceData* resData = (Resource::RawResourceData*)data;
+	//if (resData->m_resType != RES_TEXTURE)
+	//{
+	//#ifdef _DEBUG
+	//	std::cout << "Wrong resource type. Wanted Texture, got type: " << resData->m_id << std::endl;
+	//#endif // _DEBUG
+	//
+	//	return ST_WRONG_RESTYPE;
+	//}
 
 	/*T E M P*/ 
 	Resource::RawResourceData temp;
@@ -117,6 +127,8 @@ Resources::Status Resources::ModelHandler::LoadModel(unsigned int& id, ResourceC
 		{
 		case Status::ST_RES_MISSING:
 		{
+			//Commented because there are no files to read yet!
+
 			//Status mSt = m_materialHandler->LoadMaterial(matID, matPtr);
 			//if (mSt != ST_OK)
 				newModel->SetMaterial(m_materialHandler->GetPlaceHolderMaterial());
@@ -156,6 +168,9 @@ Resources::Status Resources::ModelHandler::UnloadModel(unsigned int & id)
 				mod->Destroy();
 				m_emptyContainers.push_back(mod);
 				m_models.erase(id);
+#ifdef _DEBUG
+				std::cout << "Model : " << id << ". Has been Unloaded" << std::endl;
+#endif // _DEBUG
 			}
 			break;
 		}

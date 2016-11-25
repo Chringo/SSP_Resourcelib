@@ -144,12 +144,14 @@ int main()
 	resHandle.GetModel(6666, placeHolder);	//Query models
 	resHandle.GetModel(modelId, model);		//Query models
 
+	
 	getchar();
 	std::cout << "Model name : " << model->GetName() << std::endl;
+
 	std::cout << "Model name : " << placeHolder->GetName() << std::endl;
 
 	ID3D11Buffer* buf = model->GetMesh()->GetVerticesBuffer(); //Get vertex buffer from the models mesh
-
+	
 
 	resHandle.UnloadLevel(modelId);
 

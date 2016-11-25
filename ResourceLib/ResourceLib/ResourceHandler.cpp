@@ -76,8 +76,7 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 
 				//Load the model
 				Status modelSt = m_modelHandler->LoadModel(id, modelPtr);
-				if (modelSt != Status::ST_OK)
-					return modelSt;
+				//if this fails, placeholder will take the place
 				break;
 
 			}
@@ -87,6 +86,8 @@ Resources::Status Resources::ResourceHandler::LoadLevel(unsigned int id)
 		}
 
 	}
+	if(loadedLevel != 0)
+		UnloadLevel(loadedLevel); //Unload the previous level
 	loadedLevel = id;
 	fileLoader->CloseFile(Resources::FileLoader::Files::RESOURCE_FILE);
 	return Resources::Status::ST_OK;

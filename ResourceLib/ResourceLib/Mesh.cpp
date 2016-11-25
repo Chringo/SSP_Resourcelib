@@ -126,6 +126,10 @@ bool Resources::Mesh::SetVertices(Vertex * data, ID3D11Device* dev, unsigned int
 		memcpy(m_meshData.m_vertices,&data,sizeof(Vertex)* numVerts);
 	}
 
+	m_meshData.m_numVerts = numVerts;
+	m_meshData.hasAnimation = false;
+
+
 	return true;
 }
 
@@ -170,6 +174,7 @@ bool Resources::Mesh::SetVertices(VertexAnim * data, ID3D11Device* dev, unsigned
 		delete data; data = nullptr;
 	}
 	m_meshData.hasAnimation = true;
+	m_meshData.m_numVerts = numVerts;
 	return true;
 
 }
@@ -201,6 +206,8 @@ bool Resources::Mesh::SetIndices(unsigned int * indices, unsigned int numIndices
 
 	if (keepRawData)
 		m_meshData.m_indices = indices;
+
+	m_meshData.m_numIndices = numIndices;
 	
 
 	return true;
@@ -216,6 +223,10 @@ bool Resources::Mesh::EraseMeshData()
 	delete m_meshData.m_animVertices;	 m_meshData.m_animVertices = nullptr;
 	delete m_meshData.m_vertices;		 m_meshData.m_vertices	   = nullptr;
 	delete m_meshData.m_indices;		 m_meshData.m_indices	   = nullptr;
+
+	m_meshData.m_numVerts	= 0;
+	m_meshData.m_numIndices = 0;
+	m_meshData.hasAnimation = false;
 
 	if (!Resources::SAFE_RELEASE(m_AnimVertBuffer)){
 		Resources::OutputErrorString(this, std::string("could not release animBuffer")  ); return false;
